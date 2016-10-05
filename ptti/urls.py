@@ -5,6 +5,9 @@ from . import views
 app_name = 'ptti'
 urlpatterns = [
     url(r'^$', views.login, name='index'),
+    url(r'^login/$', views.login, name='login'),
+    url(r'^logout/$', views.logout, name='logout'),
+    url(r'^perfil/$', views.perfil, name='perfil'),
     url(r'^usuarios/$',views.usuarios, name='usuarios'),
     url(r'^usuarios/crear$',views.crear_usuario, name='crear_usuario'),
     url(r'^usuarios/editar/(?P<user_id>[0-9]+)$',views.editar_usuario, name='editar_usuario'),
@@ -13,8 +16,8 @@ urlpatterns = [
     url(r'^instituciones/crear$',views.crear_institucion, name='crear_institucion'),
     url(r'^instituciones/editar/(?P<ins_id>[0-9]+)$',views.editar_institucion, name='editar_institucion'),
     url(r'^instituciones/borrar/(?P<ins_id>[0-9]+)$',views.borrar_institucion, name='borrar_institucion'),
-    url(r'^login/$', views.login, name='login'),
-    url(r'^logout/$', views.logout, name='logout'),
-    url(r'^perfil/$', views.perfil, name='perfil'),
-
+    url(r'^grupos/$',views.grupos, name='grupos'),
+    url(r'^grupos/crear$',views.crear_grupo, name='crear_grupo'),
+    url(r'^grupos/editar/(?P<gru_id>[0-9]+)$',views.editar_grupo, name='editar_grupo'),
+    url(r'^grupos/borrar/(?P<gru_id>[0-9]+)$',views.borrar_grupo, name='borrar_grupo'),
 ]

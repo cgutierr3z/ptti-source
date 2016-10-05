@@ -1,18 +1,18 @@
 {% extends 'base.html' %}
 
 {% block titulo %}
-	Instituciones
+	grupos
 {% endblock %}
 
 {% block encabezado %}
-	<h1>Lista de instituciones</h1>
+	<h1>Lista de grupos</h1>
 {% endblock %}
 
 {% block menu %}
 {% endblock %}
 
 {% block contenido %}
-	<li><a href='/instituciones/crear'>Crear grupo</a></li>
+	<li><a href='/grupos/crear'>Crear grupo</a></li>
   {% if grupos_lista %}
 	<table>
         <thead>

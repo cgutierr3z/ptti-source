@@ -59,7 +59,7 @@ class FormEditarUsuario(UserChangeForm):
     def clean_password(self):
         return ""
 
-class FormNuevaInstitucion(forms.ModelForm):
+class FormInstitucion(forms.ModelForm):
     # nit         = models.CharField(max_length=200,unique=True)
     # nombre      = models.CharField(max_length=200)
     # direccion   = models.CharField(max_length=200)
@@ -70,3 +70,8 @@ class FormNuevaInstitucion(forms.ModelForm):
     class Meta:
         model = Institucion
         fields = ['nit', 'nombre', 'direccion','telefono','ciudad','web']
+
+class FormGrupo(forms.ModelForm):
+    class Meta:
+        model = Grupo
+        fields = ['institucion', 'jornada', 'grado','nombre']

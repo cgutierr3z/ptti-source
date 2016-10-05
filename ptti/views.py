@@ -96,28 +96,28 @@ def instituciones(request):
 @login_required(login_url='/login/')
 def crear_institucion(request):
     if request.method == 'POST':
-        formulario = FormNuevaInstitucion(request.POST)
+        formulario = FormInstitucion(request.POST)
         if formulario.is_valid():
             ins = formulario.save(commit=False)
             ins.save()
             return HttpResponseRedirect('/instituciones')
     else:
-        formulario = FormNuevaInstitucion()
-    return render(request, 'institucion_crear.html', {'formulario':formulario})
+        formulario = FormInstitucion()
+    return render(request, 'institucion_form.html', {'formulario':formulario})
 
 
 @login_required(login_url='/login')
 def editar_institucion(request, ins_id):
     ins = get_object_or_404(Institucion, pk=ins_id)
     if request.method == 'POST':
-        formulario = FormNuevaInstitucion(request.POST, instance=ins)
+        formulario = FormInstitucion(request.POST, instance=ins)
         if formulario.is_valid():
             #ins = formulario.save(commit=False)
             formulario.save()
             return HttpResponseRedirect('/instituciones')
     else:
-        formulario = FormNuevaInstitucion(instance=ins)
-    return render(request, 'institucion_crear.html', {'formulario':formulario})
+        formulario = FormInstitucion(instance=ins)
+    return render(request, 'institucion_form.html', {'formulario':formulario})
 
 @login_required(login_url='/login/')
 def borrar_institucion(request, ins_id):
@@ -126,3 +126,41 @@ def borrar_institucion(request, ins_id):
     return HttpResponseRedirect('/instituciones')
 
 #vistas para grupos
+
+@login_required(login_url='/login/')
+def grupos(request):
+    grupos_lista = Grupo.objects.order_by('nombre')
+    context = {'grupos_lista': grupos_lista}
+    return render(request, 'grupos.html', context)
+
+@login_required(login_url='/login/')
+def crear_grupo(request):
+    if request.method == 'POST':
+        formulario = FormGrupo(request.POST)
+        if formulario.is_valid():
+            gru = formulario.save(commit=False)
+            gru.save()
+            return HttpResponseRedirect('/grupos')
+    else:
+        formulario = FormGrupo()
+    return render(request, 'grupo_form.html', {'formulario':formulario})
+
+
+@login_required(login_url='/login')
+def editar_grupo(request, gru_id):
+    gru = get_object_or_404(Grupo, pk=gru_id)
+    if request.method == 'POST':
+        formulario = FormGrupo(request.POST, instance=gru)
+        if formulario.is_valid():
+            #ins = formulario.save(commit=False)
+            formulario.save()
+            return HttpResponseRedirect('/grupos')
+    else:
+        formulario = FormGrupo(instance=gru)
+    return render(request, 'grupo_form.html', {'formulario':formulario})
+
+@login_required(login_url='/login/')
+def borrar_grupo(request, gru_id):
+    gru = get_object_or_404(Grupo, pk=gru_id)
+    gru.delete()
+    return HttpResponseRedirect('/grupos')
