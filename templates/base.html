@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+  <meta charset='utf-8'>
+  <title>PTTI - {% block titulo %}{% endblock %}</title>
+  <link rel='stylesheet' href='{{STATIC_URL}}css/base.css'>
+  <link rel='shortcut icon' href='{{STATIC_URL}}img/icono.png'>
+  {% block style_css %}{% endblock %}
+  <script src='{{STATIC_URL}}js/jquery-1.7.2.min.js'></script>
+  <script src='{{STATIC_URL}}js/demo.js'></script>
+</head>
+<body>
+  <header>
+	{% block encabezado %}{% endblock %}
+	<nav>
+	  <ul id='menu'>
+		  <li><a href='/'>Inicio</a></li>
+      <li><a href='/usuario/nuevo'>Nuevo usuario</a></li>
+		  <li><a href='/admin'>Panel Admin Root</a></li>
+      {% block menu %}{% endblock %}
+    </ul>
+	</nav>
+	<hr>
+  </header>
+  <section class='contenido'>
+	{% block contenido %}{% endblock %}
+  </section>
+  <footer>
+	<p>Proyecto PTTI</p>
+  </footer>
+</body>
+</html>

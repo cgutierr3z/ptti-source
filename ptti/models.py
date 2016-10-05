@@ -68,10 +68,29 @@ class Grupo(models.Model):
 class Usuario(AbstractUser):
     no_docto    = models.CharField(max_length=64)
 
+    def get_administrador(self):
+        administrador = None
+        if hasattr(self, 'administrador'):
+            administrador = self.administrador
+        return administrador
+
+    def get_psicologo(self):
+        psicologo = None
+        if hasattr(self, 'psicologo'):
+            psicologo = self.psicologo
+        return psicologo
+
+    def get_estudiante(self):
+        estudiante = None
+        if hasattr(self, 'estudiante'):
+            estudiante = self.estudiante
+        return estudiante
+
     class Meta:
         db_table = 'auth_user'
         verbose_name = "Usuario"
         verbose_name_plural = "Usuarios"
+
 
 class Administrador(models.Model):
     user        = models.OneToOneField(Usuario, on_delete=models.CASCADE)
