@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+	Nuevo grupo
+{% endblock %}
+
+{% block encabezado %}
+	<h1>Registra una Nuevo grupo</h1>
+{% endblock %}
+
+{% block menu %}
+
+{% endblock %}
+
+{% block contenido %}
+	<form id='formulario' method='post' action=''>
+		{% csrf_token %}
+		<table>{{formulario}}</table>
+		<p><input type='submit' value='Guardar'/></p>
+	</form>
+{% endblock %}

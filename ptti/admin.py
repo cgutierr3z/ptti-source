@@ -5,8 +5,8 @@ from django.contrib import admin
 from .models import *
 
 class InstitucionAdmin(admin.ModelAdmin):
-    list_display    = ['nit','nombre','direccion','telefono','cuidad','web']
-    search_fields   = ['nit','nombre','direccion','telefono','cuidad','web']
+    list_display    = ['nit','nombre','direccion','telefono','ciudad','web']
+    search_fields   = ['nit','nombre','direccion','telefono','ciudad','web']
 
 admin.site.register(Institucion, InstitucionAdmin)
 

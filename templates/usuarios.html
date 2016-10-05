@@ -5,13 +5,14 @@
 {% endblock %}
 
 {% block encabezado %}
-	<h1>Inicio</h1>
+	<h1>Lista de usuarios</h1>
 {% endblock %}
 
 {% block menu %}
 {% endblock %}
 
 {% block contenido %}
+	<li><a href='/usuarios/crear'>Crear usuario</a></li>
   {% if usuarios_lista %}
 	<table>
         <thead>
@@ -50,7 +51,10 @@
 								activ <b>{{ usuario.is_active }}</b><br />
 								super <b>{{ usuario.is_superuser }}</b><br />
 							</td>
-							<td><a href="{% url 'ptti:borrar_usuario' usuario.id %}">borrar</a></td>
+							<td>
+								<a href="{% url 'ptti:editar_usuario' usuario.id %}">editar</a>
+								<a href="{% url 'ptti:borrar_usuario' usuario.id %}">borrar</a>
+							</td>
 
             </tr>
 					{% endfor %}

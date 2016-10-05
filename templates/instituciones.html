@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+	Instituciones
+{% endblock %}
+
+{% block encabezado %}
+	<h1>Lista de instituciones</h1>
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block contenido %}
+	<li><a href='/instituciones/crear'>Crear institucion</a></li>
+  {% if instituciones_lista %}
+	<table>
+        <thead>
+          <tr style="font-weight:bold">
+            <td>nit</td>
+            <td>nombre</td>
+            <td>direccion</td>
+            <td>telefono</td>
+            <td>ciudad</td>
+						<td>web</td>
+						<td>opciones</td>
+          </tr>
+        </thead>
+        <tbody>
+					{% for institucion in instituciones_lista %}
+	          <tr>
+              <td><a href="{% url 'ptti:editar_institucion' institucion.id %}">{{ institucion.nit }}</a></td>
+							<td>{{ institucion.nombre }}</td>
+              <td>{{ institucion.direccion }}</td>
+							<td>{{ institucion.telefono }}</td>
+							<td>{{ institucion.ciudad }}</td>
+							<td>{{ institucion.web }}</td>
+							<td>
+								<a href="{% url 'ptti:editar_institucion' institucion.id %}">editar</a>
+								<a href="{% url 'ptti:borrar_institucion' institucion.id %}">borrar</a>
+							</td>
+            </tr>
+					{% endfor %}
+        </tbody>
+      </table>
+		</table>
+
+  {% else %}
+      <p>No instituciones</p>
+  {% endif %}
+{% endblock %}

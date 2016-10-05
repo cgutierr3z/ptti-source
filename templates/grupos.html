@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+	Instituciones
+{% endblock %}
+
+{% block encabezado %}
+	<h1>Lista de instituciones</h1>
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block contenido %}
+	<li><a href='/instituciones/crear'>Crear grupo</a></li>
+  {% if grupos_lista %}
+	<table>
+        <thead>
+          <tr style="font-weight:bold">
+            <td>institucion</td>
+            <td>jornada</td>
+            <td>grado</td>
+            <td>nombre</td>
+            <td>opciones</td>
+          </tr>
+        </thead>
+        <tbody>
+					{% for grupo in grupos_lista %}
+	          <tr>
+              <td><a href="{% url 'ptti:editar_grupo' grupo.id %}">{{ grupo.institucion }}</a></td>
+							<td>{{ grupo.jornada }}</td>
+              <td>{{ grupo.grado }}</td>
+							<td>{{ grupo.nombre }}</td>
+							<td>
+								<a href="{% url 'ptti:editar_grupo' grupo.id %}">editar</a>
+								<a href="{% url 'ptti:borrar_grupo' grupo.id %}">borrar</a>
+							</td>
+            </tr>
+					{% endfor %}
+        </tbody>
+      </table>
+		</table>
+
+  {% else %}
+      <p>No grupos</p>
+  {% endif %}
+{% endblock %}

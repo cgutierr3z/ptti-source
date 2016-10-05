@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Usuario
+from .models import *
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, ReadOnlyPasswordHashField
 
 class FormNuevoUsuario(UserCreationForm):
@@ -34,7 +34,7 @@ class FormNuevoUsuario(UserCreationForm):
 
     class Meta:
         model = Usuario
-        fields = ('username','email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','password1', 'password2')
+        fields = ('username','email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','password1', 'password2','is_active','is_administrador','is_psicologo','is_estudiante')
 
     def save(self, commit=True):
         user = super(FormNuevoUsuario, self).save(commit=False)
@@ -42,7 +42,6 @@ class FormNuevoUsuario(UserCreationForm):
         if commit:
             user.save()
         return user
-
 
 class FormEditarUsuario(UserChangeForm):
     fecha_nac   = forms.DateField(label='Fecha nacimiento',widget=forms.SelectDateWidget(years=[y for y in range(1990,2017)]),required=True)
@@ -59,3 +58,15 @@ class FormEditarUsuario(UserChangeForm):
 
     def clean_password(self):
         return ""
+
+class FormNuevaInstitucion(forms.ModelForm):
+    # nit         = models.CharField(max_length=200,unique=True)
+    # nombre      = models.CharField(max_length=200)
+    # direccion   = models.CharField(max_length=200)
+    # telefono    = models.CharField(max_length=200)
+    # cuidad      = models.CharField(max_length=200)
+    # web         = models.URLField(max_length=200)
+
+    class Meta:
+        model = Institucion
+        fields = ['nit', 'nombre', 'direccion','telefono','ciudad','web']

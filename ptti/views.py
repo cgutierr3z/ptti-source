@@ -16,41 +16,6 @@ def index(request):
     context = {'guest': guest}
     return render(request, 'index.html', context)
 
-@login_required(login_url='/login/')
-def crear_usuario(request):
-    if request.method=='POST':
-        formulario = FormNuevoUsuario(request.POST)
-        if formulario.is_valid():
-            formulario.save()
-            return HttpResponseRedirect('/')
-    else:
-        formulario = FormNuevoUsuario()
-    return render(request, 'nuevo_usuario.html', {'formulario':formulario})
-
-@login_required(login_url='/login/')
-def borrar_usuario(request, user_id):
-    user = get_object_or_404(Usuario, pk=user_id)
-    user.delete()
-    return HttpResponseRedirect('/usuarios')
-
-@login_required(login_url='/login')
-def editar_usuario(request, user_id):
-    user = get_object_or_404(Usuario, pk=user_id)
-    if request.method=='POST':
-        formulario = FormEditarUsuario(request.POST, instance=user)
-        if formulario.is_valid():
-            formulario.save()
-            return HttpResponseRedirect('/usuarios')
-    else:
-        formulario = FormEditarUsuario(instance=user)
-    return render(request, 'editar_perfil.html', {'formulario':formulario})
-
-@login_required(login_url='/login/')
-def usuarios(request):
-    usuarios_lista = Usuario.objects.order_by('date_joined')
-    context = {'usuarios_lista': usuarios_lista}
-    return render(request, 'usuarios.html', context)
-
 def login(request):
     guest = request.user.is_anonymous()
     if not guest:
@@ -63,15 +28,15 @@ def login(request):
             acceso = authenticate(username=usuario, password=clave)
             if acceso is not None:
                 if not acceso.is_active:
-                    return render(request,'inactivo.html')
+                    return render(request,'login_error.html')
                 else:
                     auth_login(request, acceso)
                     return HttpResponseRedirect('/perfil')
             else:
-                return render(request,'error_usuario.html',{'formulario':formulario})
+                return render(request,'login_error.html',{'formulario':formulario})
     else:
         formulario = AuthenticationForm()
-    return render(request,'ingresar.html',{'formulario':formulario,'guest':guest})
+    return render(request,'login.html',{'formulario':formulario,'guest':guest})
 
 @login_required(login_url='/login/')
 def logout(request):
@@ -80,6 +45,84 @@ def logout(request):
 
 @login_required(login_url='/login/')
 def perfil(request):
-
     usuario = request.user
     return  render(request,'perfil.html', {'usuario':usuario})
+
+#vistas de usuarios
+
+@login_required(login_url='/login/')
+def usuarios(request):
+    usuarios_lista = Usuario.objects.order_by('date_joined')
+    context = {'usuarios_lista': usuarios_lista}
+    return render(request, 'usuarios.html', context)
+
+@login_required(login_url='/login/')
+def crear_usuario(request):
+    if request.method=='POST':
+        formulario = FormNuevoUsuario(request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            return HttpResponseRedirect('/usuarios')
+    else:
+        formulario = FormNuevoUsuario()
+    return render(request, 'crear_usuario.html', {'formulario':formulario})
+
+@login_required(login_url='/login')
+def editar_usuario(request, user_id):
+    user = get_object_or_404(Usuario, pk=user_id)
+    if request.method=='POST':
+        formulario = FormEditarUsuario(request.POST, instance=user)
+        if formulario.is_valid():
+            formulario.save()
+            return HttpResponseRedirect('/usuarios')
+    else:
+        formulario = FormEditarUsuario(instance=user)
+    return render(request, 'editar_usuario.html', {'formulario':formulario})
+
+@login_required(login_url='/login/')
+def borrar_usuario(request, user_id):
+    user = get_object_or_404(Usuario, pk=user_id)
+    user.delete()
+    return HttpResponseRedirect('/usuarios')
+
+#vistas instituciones
+
+@login_required(login_url='/login/')
+def instituciones(request):
+    instituciones_lista = Institucion.objects.order_by('nit')
+    context = {'instituciones_lista': instituciones_lista}
+    return render(request, 'instituciones.html', context)
+
+@login_required(login_url='/login/')
+def crear_institucion(request):
+    if request.method == 'POST':
+        formulario = FormNuevaInstitucion(request.POST)
+        if formulario.is_valid():
+            ins = formulario.save(commit=False)
+            ins.save()
+            return HttpResponseRedirect('/instituciones')
+    else:
+        formulario = FormNuevaInstitucion()
+    return render(request, 'institucion_crear.html', {'formulario':formulario})
+
+
+@login_required(login_url='/login')
+def editar_institucion(request, ins_id):
+    ins = get_object_or_404(Institucion, pk=ins_id)
+    if request.method == 'POST':
+        formulario = FormNuevaInstitucion(request.POST, instance=ins)
+        if formulario.is_valid():
+            #ins = formulario.save(commit=False)
+            formulario.save()
+            return HttpResponseRedirect('/instituciones')
+    else:
+        formulario = FormNuevaInstitucion(instance=ins)
+    return render(request, 'institucion_crear.html', {'formulario':formulario})
+
+@login_required(login_url='/login/')
+def borrar_institucion(request, ins_id):
+    ins = get_object_or_404(Institucion, pk=ins_id)
+    ins.delete()
+    return HttpResponseRedirect('/instituciones')
+
+#vistas para grupos
