@@ -8,6 +8,10 @@ from django.contrib.auth.models import AbstractUser
 
 #modelo de instiuciones
 class Institucion(models.Model):
+    class Meta:
+        verbose_name = "Institucion"
+        verbose_name_plural = "Instituciones"
+
     nit         = models.CharField(max_length=200,unique=True)
     nombre      = models.CharField(max_length=200)
     direccion   = models.CharField(max_length=200)
@@ -18,12 +22,12 @@ class Institucion(models.Model):
     def __str__(self):
         return self.nombre
 
-    class Meta:
-        verbose_name = "Institucion"
-        verbose_name_plural = "Instituciones"
-
 #modelo de grupos
 class Grupo(models.Model):
+    class Meta:
+        verbose_name = "Grupo"
+        verbose_name_plural = "Grupos"
+
     JORNADA_LIST = [
         ('M', 'MANANA'),
         ('T', 'TARDE'),
@@ -60,50 +64,72 @@ class Grupo(models.Model):
     def __str__(self):
         return self.nombre + "-" + self.institucion.nombre
 
-    class Meta:
-        verbose_name = "Grupo"
-        verbose_name_plural = "Grupos"
 
 #modelo de usuarios
 class Usuario(AbstractUser):
-    no_docto    = models.CharField(max_length=64)
-
-    def get_administrador(self):
-        administrador = None
-        if hasattr(self, 'administrador'):
-            administrador = self.administrador
-        return administrador
-
-    def get_psicologo(self):
-        psicologo = None
-        if hasattr(self, 'psicologo'):
-            psicologo = self.psicologo
-        return psicologo
-
-    def get_estudiante(self):
-        estudiante = None
-        if hasattr(self, 'estudiante'):
-            estudiante = self.estudiante
-        return estudiante
-
     class Meta:
         db_table = 'auth_user'
         verbose_name = "Usuario"
         verbose_name_plural = "Usuarios"
 
+    TIPO_DOC_LIST = [
+        ('CC', 'CEDULA CUIDADANIA'),
+        ('CE', 'CEDULA EXTRANJERIA'),
+        ('PAS', 'PASAPORTE'),
+        ('TI', 'TARJETA IDENTIDAD'),
+    ]
+    GENERO_LIST= [
+        ('HT', 'HETEROSEXUAL'),
+        ('HM', 'HOMOSEXUAL'),
+        ('LE', 'LESBIANA'),
+        ('BI', 'BISEXUAL'),
+        ('IN', 'INDIFERENCIADO'),
+    ]
+
+    is_administrador    = models.BooleanField('Administrador',default=False)
+    is_psicologo        = models.BooleanField('Psicologo',default=False)
+    is_estudiante       = models.BooleanField('Estudiante',default=False)
+    tipo_docto          = models.CharField('Tipo documento',max_length=20,choices=TIPO_DOC_LIST)
+    no_docto            = models.CharField('Numero documento',max_length=20)
+    fecha_nac           = models.DateField('Fecha nacimiento')
+    genero              = models.CharField('Genero',max_length=20,choices=GENERO_LIST)
+    direccion           = models.CharField('Direccion',max_length=100)
+    telefono            = models.CharField('Telefono',max_length=15)
+
+    def administrador(self):
+        return self.is_administrador
+
+    def psicologo(self):
+        return self.is_psicologo
+
+    def estudiante(self):
+        return self.is_estudiante
+
+    
 
 class Administrador(models.Model):
+    class Meta:
+        verbose_name = "Administrador"
+        verbose_name_plural = "Administradores"
+
     user        = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     #active      = models.BooleanField(default=True)
 
 class Psicologo(models.Model):
+    class Meta:
+        verbose_name = "Psicologo"
+        verbose_name_plural = "Psicologos"
+
     user        = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     #active      = models.BooleanField(default=True)
 
 class Estudiante(models.Model):
+    class Meta:
+        verbose_name = "Estudiante"
+        verbose_name_plural = "Estudiantes"
+
     user        = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     #active      = models.BooleanField(default=True)
-    institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
     grupo       = models.ForeignKey(Grupo, on_delete=models.CASCADE)
 
 #modelo de Test

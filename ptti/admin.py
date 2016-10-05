@@ -18,9 +18,9 @@ class GrupoAdmin(admin.ModelAdmin):
 admin.site.register(Grupo, GrupoAdmin)
 
 class UsuariosAdmin(admin.ModelAdmin):
-    fields          = ['username','first_name','last_name','no_docto','email','password','is_staff','is_active','is_superuser']
-    list_display    = ['username','first_name','last_name','no_docto','email','is_staff','is_active','is_superuser']
-    search_fields   = ['username','first_name','last_name','no_docto','email','is_staff','is_active','is_superuser']
+    fields          = ['email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','password','is_administrador','is_psicologo','is_estudiante','is_staff','is_active','is_superuser']
+    list_display    = ['username','email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','is_administrador','is_psicologo','is_estudiante','is_staff','is_active','is_superuser']
+    search_fields   = ['email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono']
 
     actions = ['desactivar']
 
@@ -88,7 +88,7 @@ class PsicologoAdmin(admin.ModelAdmin):
 admin.site.register(Psicologo,PsicologoAdmin)
 
 class EstudianteAdmin(admin.ModelAdmin):
-    raw_id_fields = ('user','institucion','grupo')
+    raw_id_fields = ('user','grupo')
     #fields = ('user','user_username')
     list_display    = ['username','first_name','last_name','no_docto','email','is_active']
     search_fields   = ['username','first_name','last_name','no_docto','email']

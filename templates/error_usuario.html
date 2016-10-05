@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+	Error de acceso
+{% endblock %}
+
+{% block encabezado %}
+	<h1>Error de acceso</h1>
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block contenido %}
+	<p>El usuario y la contraseña no coinciden o no existen.</p>
+	<p>Intentalo de nuevo.</p>
+	<form id='formulario' method='post' action=''>{% csrf_token %}
+		<table>{{formulario}}</table>
+		<p><input type='submit' value='Ingresar'/></p>
+	</form>
+{% endblock %}
