@@ -46,7 +46,7 @@ class FormNuevoUsuario(UserCreationForm):
 
 class FormEditarUsuario(UserChangeForm):
     fecha_nac   = forms.DateField(label='Fecha nacimiento',widget=forms.SelectDateWidget(years=[y for y in range(1990,2017)]),required=True)
-    #password = ReadOnlyPasswordHashField()
+    password = ReadOnlyPasswordHashField()
 
     class Meta:
         model = Usuario

@@ -33,7 +33,7 @@
         <tbody>
 					{% for usuario in usuarios_lista %}
 	          <tr>
-              <td><a href="{% url 'ptti:editar_perfil' usuario.id %}">{{ usuario.username }}</a></td>
+              <td><a href="{% url 'ptti:editar_usuario' usuario.id %}">{{ usuario.username }}</a></td>
 							<td>{{ usuario.email }}</td>
               <td>{{ usuario.first_name }}</td>
               <td>{{ usuario.last_name }}</td>
@@ -49,9 +49,8 @@
 								estud <b>{{ usuario.is_estudiante }}</b><br />
 								activ <b>{{ usuario.is_active }}</b><br />
 								super <b>{{ usuario.is_superuser }}</b><br />
-
 							</td>
-							<td><a href="{% url 'ptti:editar_perfil' usuario.id %}">borrar</a></td>
+							<td><a href="{% url 'ptti:borrar_usuario' usuario.id %}">borrar</a></td>
 
             </tr>
 					{% endfor %}

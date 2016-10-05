@@ -16,8 +16,8 @@ def index(request):
     context = {'guest': guest}
     return render(request, 'index.html', context)
 
-#@login_required(login_url='/login')
-def nuevo_usuario(request):
+@login_required(login_url='/login/')
+def crear_usuario(request):
     if request.method=='POST':
         formulario = FormNuevoUsuario(request.POST)
         if formulario.is_valid():
@@ -25,11 +25,16 @@ def nuevo_usuario(request):
             return HttpResponseRedirect('/')
     else:
         formulario = FormNuevoUsuario()
-    #return render_to_response('nuevousuario.html',{'formulario':formulario})
     return render(request, 'nuevo_usuario.html', {'formulario':formulario})
 
+@login_required(login_url='/login/')
+def borrar_usuario(request, user_id):
+    user = get_object_or_404(Usuario, pk=user_id)
+    user.delete()
+    return HttpResponseRedirect('/usuarios')
+
 @login_required(login_url='/login')
-def editar_perfil(request, user_id):
+def editar_usuario(request, user_id):
     user = get_object_or_404(Usuario, pk=user_id)
     if request.method=='POST':
         formulario = FormEditarUsuario(request.POST, instance=user)
