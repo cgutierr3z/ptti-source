@@ -13,15 +13,22 @@ class Institucion(models.Model):
         verbose_name = "Institucion"
         verbose_name_plural = "Instituciones"
 
-    nit         = models.CharField(max_length=200,unique=True)
+    nit         = models.CharField('NIT',max_length=200,unique=True)
     nombre      = models.CharField(max_length=200)
     direccion   = models.CharField(max_length=200)
     telefono    = models.CharField(max_length=200)
     ciudad      = models.CharField(max_length=200)
-    web         = models.URLField(max_length=200)
+    web         = models.URLField('Sitio web',max_length=200)
+    is_active   = models.BooleanField('Activar',default=True)
 
     def __str__(self):
         return self.nombre
+
+    def desactivar(self):
+        self.is_active = False
+
+    def activar(self):
+        self.is_active = True
 
 #modelo de grupos
 class Grupo(models.Model):
@@ -60,10 +67,17 @@ class Grupo(models.Model):
     jornada     = models.CharField(max_length=200,choices=JORNADA_LIST)
     grado       = models.CharField(max_length=200,choices=GRADOS_LIST)
     nombre      = models.CharField(max_length=200)
+    is_active   = models.BooleanField('Activar',default=True)
 
 
     def __str__(self):
         return self.nombre + "-" + self.institucion.nombre
+
+    def desactivar(self):
+        self.is_active = False
+
+    def activar(self):
+        self.is_active = True
 
 
 #modelo de usuarios
@@ -97,15 +111,11 @@ class Usuario(AbstractUser):
     direccion           = models.CharField('Direccion',max_length=100)
     telefono            = models.CharField('Telefono',max_length=15)
 
-    def administrador(self):
-        return self.is_administrador
+    def desactivar(self):
+        self.is_active = False
 
-    def psicologo(self):
-        return self.is_psicologo
-
-    def estudiante(self):
-        return self.is_estudiante
-
+    def activar(self):
+        self.is_active = True
 
 
 class Administrador(models.Model):

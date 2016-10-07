@@ -69,9 +69,9 @@ class FormInstitucion(forms.ModelForm):
 
     class Meta:
         model = Institucion
-        fields = ['nit', 'nombre', 'direccion','telefono','ciudad','web']
+        fields = ['nit', 'nombre', 'direccion','telefono','ciudad','web','is_active']
 
 class FormGrupo(forms.ModelForm):
     class Meta:
         model = Grupo
-        fields = ['institucion', 'jornada', 'grado','nombre']
+        fields = ['institucion', 'jornada', 'grado','nombre','is_active']

@@ -17,6 +17,7 @@
 	<table>
         <thead>
           <tr style="font-weight:bold">
+						<td></td>
             <td>institucion</td>
             <td>jornada</td>
             <td>grado</td>
@@ -27,13 +28,18 @@
         <tbody>
 					{% for grupo in grupos_lista %}
 	          <tr>
+							<td>{{ forloop.counter }}</td>
               <td><a href="{% url 'ptti:editar_grupo' grupo.id %}">{{ grupo.institucion }}</a></td>
 							<td>{{ grupo.jornada }}</td>
               <td>{{ grupo.grado }}</td>
 							<td>{{ grupo.nombre }}</td>
 							<td>
 								<a href="{% url 'ptti:editar_grupo' grupo.id %}">editar</a>
-								<a href="{% url 'ptti:borrar_grupo' grupo.id %}">borrar</a>
+								{% if grupo.is_active %}
+									<a href="{% url 'ptti:desactivar_grupo' grupo.id %}">desactivar</a>
+								{% else %}
+							    <a href="{% url 'ptti:activar_grupo' grupo.id %}">activar</a>
+							  {% endif %}
 							</td>
             </tr>
 					{% endfor %}

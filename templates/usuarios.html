@@ -53,7 +53,11 @@
 							</td>
 							<td>
 								<a href="{% url 'ptti:editar_usuario' usuario.id %}">editar</a>
-								<a href="{% url 'ptti:borrar_usuario' usuario.id %}">borrar</a>
+								{% if usuario.is_active %}
+									<a href="{% url 'ptti:desactivar_usuario' usuario.id %}">desactivar</a>
+								{% else %}
+							    <a href="{% url 'ptti:activar_usuario' usuario.id %}">activar</a>
+							  {% endif %}
 							</td>
 
             </tr>

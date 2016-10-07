@@ -80,9 +80,17 @@ def editar_usuario(request, user_id):
     return render(request, 'usuario_editar.html', {'formulario':formulario})
 
 @login_required(login_url='/login/')
-def borrar_usuario(request, user_id):
+def desactivar_usuario(request, user_id):
     user = get_object_or_404(Usuario, pk=user_id)
-    user.delete()
+    user.desactivar()
+    user.save()
+    return HttpResponseRedirect('/usuarios')
+
+@login_required(login_url='/login/')
+def activar_usuario(request, user_id):
+    user = get_object_or_404(Usuario, pk=user_id)
+    user.activar()
+    user.save()
     return HttpResponseRedirect('/usuarios')
 
 #vistas instituciones
@@ -120,9 +128,17 @@ def editar_institucion(request, ins_id):
     return render(request, 'institucion_form.html', {'formulario':formulario})
 
 @login_required(login_url='/login/')
-def borrar_institucion(request, ins_id):
+def desactivar_institucion(request, ins_id):
     ins = get_object_or_404(Institucion, pk=ins_id)
-    ins.delete()
+    ins.desactivar()
+    ins.save()
+    return HttpResponseRedirect('/instituciones')
+
+@login_required(login_url='/login/')
+def activar_institucion(request, ins_id):
+    ins = get_object_or_404(Institucion, pk=ins_id)
+    ins.activar()
+    ins.save()
     return HttpResponseRedirect('/instituciones')
 
 #vistas para grupos
@@ -145,7 +161,6 @@ def crear_grupo(request):
         formulario = FormGrupo()
     return render(request, 'grupo_form.html', {'formulario':formulario})
 
-
 @login_required(login_url='/login')
 def editar_grupo(request, gru_id):
     gru = get_object_or_404(Grupo, pk=gru_id)
@@ -160,7 +175,15 @@ def editar_grupo(request, gru_id):
     return render(request, 'grupo_form.html', {'formulario':formulario})
 
 @login_required(login_url='/login/')
-def borrar_grupo(request, gru_id):
+def desactivar_grupo(request, gru_id):
     gru = get_object_or_404(Grupo, pk=gru_id)
-    gru.delete()
+    gru.desactivar()
+    gru.save()
+    return HttpResponseRedirect('/grupos')
+
+@login_required(login_url='/login/')
+def activar_grupo(request, gru_id):
+    gru = get_object_or_404(Grupo, pk=gru_id)
+    gru.activar()
+    gru.save()
     return HttpResponseRedirect('/grupos')

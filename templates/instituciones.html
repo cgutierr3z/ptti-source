@@ -37,7 +37,11 @@
 							<td>{{ institucion.web }}</td>
 							<td>
 								<a href="{% url 'ptti:editar_institucion' institucion.id %}">editar</a>
-								<a href="{% url 'ptti:borrar_institucion' institucion.id %}">borrar</a>
+								{% if institucion.is_active %}
+									<a href="{% url 'ptti:desactivar_institucion' institucion.id %}">desactivar</a>
+								{% else %}
+							    <a href="{% url 'ptti:activar_institucion' institucion.id %}">activar</a>
+							  {% endif %}
 							</td>
             </tr>
 					{% endfor %}
