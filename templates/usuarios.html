@@ -9,12 +9,13 @@
 {% endblock %}
 
 {% block menu %}
+	
 {% endblock %}
 
 {% block contenido %}
-	<li><a href='/usuarios/crear'>Crear usuario</a></li>
+	<a class="btn btn-primary" href='/usuarios/crear'>Crear usuario</a>
   {% if usuarios_lista %}
-	<table>
+	<table class="table table-striped">
         <thead>
           <tr style="font-weight:bold;text-align:center">
 						<td></td>
@@ -54,11 +55,11 @@
 								super <b>{{ usuario.is_superuser }}</b><br />
 							</td>
 							<td>
-								<a href="{% url 'ptti:editar_usuario' usuario.id %}">editar</a>
+								<a class="btn btn-sm btn-default" href="{% url 'ptti:editar_usuario' usuario.id %}">editar</a>
 								{% if usuario.is_active %}
-									<a href="{% url 'ptti:desactivar_usuario' usuario.id %}">desactivar</a>
+									<a class="btn btn-sm btn-danger" href="{% url 'ptti:desactivar_usuario' usuario.id %}">desactivar</a>
 								{% else %}
-							    <a href="{% url 'ptti:activar_usuario' usuario.id %}">activar</a>
+							    <a class="btn btn-sm btn-success" href="{% url 'ptti:activar_usuario' usuario.id %}">activar</a>
 							  {% endif %}
 							</td>
 

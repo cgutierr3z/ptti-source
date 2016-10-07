@@ -12,9 +12,9 @@
 {% endblock %}
 
 {% block contenido %}
-	<li><a href='/grupos/crear'>Crear grupo</a></li>
+	<a class="btn btn-primary" href='/grupos/crear'>Crear grupo</a>
   {% if grupos_lista %}
-	<table>
+	<table class="table table-striped">
         <thead>
           <tr style="font-weight:bold;text-align:center">
 						<td></td>
@@ -34,11 +34,11 @@
               <td>{{ grupo.grado }}</td>
 							<td>{{ grupo.nombre }}</td>
 							<td>
-								<a href="{% url 'ptti:editar_grupo' grupo.id %}">editar</a>
+								<a class="btn btn-sm btn-default" href="{% url 'ptti:editar_grupo' grupo.id %}">editar</a>
 								{% if grupo.is_active %}
-									<a href="{% url 'ptti:desactivar_grupo' grupo.id %}">desactivar</a>
+									<a class="btn btn-sm btn-danger" href="{% url 'ptti:desactivar_grupo' grupo.id %}">desactivar</a>
 								{% else %}
-							    <a href="{% url 'ptti:activar_grupo' grupo.id %}">activar</a>
+							    <a class="btn btn-sm btn-success" href="{% url 'ptti:activar_grupo' grupo.id %}">activar</a>
 							  {% endif %}
 							</td>
             </tr>

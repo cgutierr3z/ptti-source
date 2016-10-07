@@ -3,37 +3,53 @@
   <head>
     <meta charset='utf-8'>
     <title>PTTI - {% block titulo %}{% endblock %}</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
     {% block style_css %}{% endblock %}
   </head>
 
   <body>
-    <header>
-    	{% block encabezado %}{% endblock %}
-    	<nav>
-    	  <ul id='menu'>
-    		  <li><a href='/'>Inicio</a></li>
 
-          {% if guest %}
-            <li><a href='/login'>Login</a></li>
-          {% else %}
-            <li><a href='/logout'>Logout</a></li>
-            <li><a href='/perfil'>Perfil</a></li>
-            <li><a href='/usuarios/'>Usuarios</a></li>
-            <li><a href='/instituciones/'>Instituciones</a></li>
-            <li><a href='/grupos/'>Grupos</a></li>
-          {% endif %}
 
-    		  <li><a href='/admin'>Panel Admin Root</a></li>
-        </ul>
+    	<nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+          <div id="navbar" class="navbar-collapse collapse">
+        	  <ul class="nav navbar-nav">
+        		  <li><a href='/'>Inicio</a></li>
+              {% if guest %}
+                <li><a class="btn" href='/login'>Login</a></li>
+              {% else %}
+                <li><a href='/perfil'>Perfil</a></li>
+                <li><a href='/usuarios/'>Usuarios</a></li>
+                {% block menu %}{% endblock %}
+                <li><a href='/instituciones/'>Instituciones</a></li>
+                <li><a href='/grupos/'>Grupos</a></li>
+                <li><a class="btn" href='/logout'>Logout</a></li>
+              {% endif %}
+
+            </ul>
+          </div>
+        </div>
     	</nav>
-    	<hr>
-    </header>
 
-    <section class='contenido'>
+
+
+    <div class="container col-12" style="margin-top:50px">
+      {% block encabezado %}{% endblock %}
+    	<hr />
+
   	   {% block contenido %}{% endblock %}
-    </section>
+    </div>
 
-    <footer>
+    <footer class="container col-12">
   	   <p>Proyecto PTTI</p>
     </footer>
   </body>
