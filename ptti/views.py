@@ -65,7 +65,7 @@ def crear_usuario(request):
             return HttpResponseRedirect('/usuarios')
     else:
         formulario = FormNuevoUsuario()
-    return render(request, 'crear_usuario.html', {'formulario':formulario})
+    return render(request, 'usuario_crear.html', {'formulario':formulario})
 
 @login_required(login_url='/login')
 def editar_usuario(request, user_id):
@@ -77,7 +77,7 @@ def editar_usuario(request, user_id):
             return HttpResponseRedirect('/usuarios')
     else:
         formulario = FormEditarUsuario(instance=user)
-    return render(request, 'editar_usuario.html', {'formulario':formulario})
+    return render(request, 'usuario_editar.html', {'formulario':formulario})
 
 @login_required(login_url='/login/')
 def borrar_usuario(request, user_id):
