@@ -7,7 +7,7 @@ Codigo fuente del proyecto para Laboratorio de Software del programa Ingenieria 
  2. `cd ptti-source`
  3. `virtualenv env`
  4. `source env/bin/activate`
- 5. `pip install -r reqs.text`
+ 5. `pip install -r reqs.txt`
  6. `python manage.py runserver`
  7. `superuser: root; password: asdf1234`
 
