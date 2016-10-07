@@ -16,14 +16,15 @@
   {% if usuarios_lista %}
 	<table>
         <thead>
-          <tr style="font-weight:bold">
+          <tr style="font-weight:bold;text-align:center">
+						<td></td>
             <td>usuario</td>
             <td>mail</td>
             <td>nombre</td>
             <td>apellido</td>
-            <td>tipo doc</td>
-						<td>num doc</td>
-						<td>fecha nac</td>
+            <td>tipo-doc</td>
+						<td>num-doc</td>
+						<td>fecha-nac</td>
 						<td>genero</td>
 						<td>direccion</td>
 						<td>telefono</td>
@@ -34,6 +35,7 @@
         <tbody>
 					{% for usuario in usuarios_lista %}
 	          <tr>
+							<td>{{ forloop.counter }}</td>
               <td><a href="{% url 'ptti:editar_usuario' usuario.id %}">{{ usuario.username }}</a></td>
 							<td>{{ usuario.email }}</td>
               <td>{{ usuario.first_name }}</td>
