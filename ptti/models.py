@@ -92,7 +92,7 @@ class Usuario(AbstractUser):
     is_estudiante       = models.BooleanField('Estudiante',default=False)
     tipo_docto          = models.CharField('Tipo documento',max_length=20,choices=TIPO_DOC_LIST)
     no_docto            = models.CharField('Numero documento',max_length=20)
-    fecha_nac           = models.DateField('Fecha nacimiento',default='31/12/1999')
+    fecha_nac           = models.DateField('Fecha nacimiento')
     genero              = models.CharField('Genero',max_length=20,choices=GENERO_LIST)
     direccion           = models.CharField('Direccion',max_length=100)
     telefono            = models.CharField('Telefono',max_length=15)

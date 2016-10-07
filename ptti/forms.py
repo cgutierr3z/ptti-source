@@ -26,7 +26,7 @@ class FormNuevoUsuario(UserCreationForm):
     genero      = forms.ChoiceField(label='Genero',choices = GENERO_LIST, initial='', widget=forms.Select(), required=True)
     direccion   = forms.CharField(label='Direccion',required=True)
     telefono    = forms.CharField(label='Telefono',required=True)
-    is_active       = forms.BooleanField(label='Activo',required=False)
+    is_active       = forms.BooleanField(label='Activo',required=True)
     is_administrador= forms.BooleanField(label='Administrador',required=False)
     is_psicologo    = forms.BooleanField(label='Psicologo',required=False)
     is_estudiante   = forms.BooleanField(label='Estudiante',required=False)
