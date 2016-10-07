@@ -3,7 +3,7 @@
 Codigo fuente del proyecto para Laboratorio de Software del programa Ingenieria de Sistemas y Computacion de la Universidad Tecnologica de Pereira, Colombia. Segundo semestre de 2016.
 
 ## Install
- 1. `https://github.com/z3774/ptti-source`
+ 1. `git clone https://github.com/z3774/ptti-source`
  2. `cd ptti-source`
  3. `virtualenv env`
  4. `source env/bin/activate`
