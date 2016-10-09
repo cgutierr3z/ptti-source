@@ -380,4 +380,4 @@ class FormInstitucion(forms.ModelForm):
 class FormGrupo(forms.ModelForm):
     class Meta:
         model = Grupo
-        fields = ['institucion', 'jornada', 'grado','nombre','is_active']
+        fields = ['institucion', 'jornada', 'grado','nombre','psicologo','is_active']

@@ -30,56 +30,6 @@ class Institucion(models.Model):
     def activar(self):
         self.is_active = True
 
-#modelo de grupos
-class Grupo(models.Model):
-    class Meta:
-        verbose_name = "Grupo"
-        verbose_name_plural = "Grupos"
-
-    JORNADA_LIST = [
-        ('MANANA', 'MANANA'),
-        ('TARDE', 'TARDE'),
-        ('UNICA', 'UNICA'),
-        ('NOCTURNA', 'NOCTURNA'),
-        ('SABATINA', 'SABATINA'),
-    ]
-    GRADOS_LIST = [
-        ('PRIMARIA',(
-                ('0','CERO'),
-                ('1','PRIMERO'),
-                ('2','SEGUNDO'),
-                ('3','TERCERO'),
-                ('4','CUARTO'),
-                ('5','QUINTO'),
-            )
-        ),
-        ('SECUNDARIA',(
-                ('6','SEXTO'),
-                ('7','SEPTIMO'),
-                ('8','OCTAVO'),
-                ('9','NOVENO'),
-                ('10','DECIMO'),
-                ('11','UNDECIMO'),
-            )
-        ),
-    ]
-    institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
-    jornada     = models.CharField(max_length=200,choices=JORNADA_LIST)
-    grado       = models.CharField(max_length=200,choices=GRADOS_LIST)
-    nombre      = models.CharField(max_length=200)
-    is_active   = models.BooleanField('Activar',default=True)
-
-
-    def __str__(self):
-        return self.nombre + "-" + self.institucion.nombre
-
-    def desactivar(self):
-        self.is_active = False
-
-    def activar(self):
-        self.is_active = True
-
-
 #modelo de usuarios
 class Usuario(AbstractUser):
     class Meta:
@@ -133,6 +83,58 @@ class Psicologo(Usuario):
 
     #user        = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     #active      = models.BooleanField(default=True)
+
+#modelo de grupos
+class Grupo(models.Model):
+    class Meta:
+        verbose_name = "Grupo"
+        verbose_name_plural = "Grupos"
+
+    JORNADA_LIST = [
+        ('MANANA', 'MANANA'),
+        ('TARDE', 'TARDE'),
+        ('UNICA', 'UNICA'),
+        ('NOCTURNA', 'NOCTURNA'),
+        ('SABATINA', 'SABATINA'),
+    ]
+    GRADOS_LIST = [
+        ('PRIMARIA',(
+                ('0','CERO'),
+                ('1','PRIMERO'),
+                ('2','SEGUNDO'),
+                ('3','TERCERO'),
+                ('4','CUARTO'),
+                ('5','QUINTO'),
+            )
+        ),
+        ('SECUNDARIA',(
+                ('6','SEXTO'),
+                ('7','SEPTIMO'),
+                ('8','OCTAVO'),
+                ('9','NOVENO'),
+                ('10','DECIMO'),
+                ('11','UNDECIMO'),
+            )
+        ),
+    ]
+    institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
+    jornada     = models.CharField(max_length=200,choices=JORNADA_LIST)
+    grado       = models.CharField(max_length=200,choices=GRADOS_LIST)
+    nombre      = models.CharField(max_length=200)
+    psicologo   = models.ForeignKey(Psicologo, on_delete=models.CASCADE)
+    is_active   = models.BooleanField('Activar',default=True)
+
+
+    def __str__(self):
+        return self.nombre + "-" + self.institucion.nombre
+
+    def desactivar(self):
+        self.is_active = False
+
+    def activar(self):
+        self.is_active = True
+
+
 
 class Estudiante(Usuario):
     class Meta:

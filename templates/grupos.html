@@ -23,6 +23,7 @@
           <td>jornada</td>
           <td>grado</td>
           <td>nombre</td>
+					<td>psicologo</td>
           <td>opciones</td>
         </tr>
       </thead>
@@ -34,6 +35,7 @@
 						<td>{{ grupo.jornada }}</td>
             <td>{{ grupo.grado }}</td>
 						<td>{{ grupo.nombre }}</td>
+						<td>{{ grupo.psicologo }}</td>
 						<td>
 							<a class="btn btn-sm btn-default" href="{% url 'ptti:editar_grupo' grupo.id %}">editar</a>
 							{% if grupo.is_active %}

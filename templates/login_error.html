@@ -13,13 +13,12 @@
 
 {% block contenido %}
 
-
 	<div class="container">
 		<form class="form-signin" id='formulario' method='post' style="margin: 0 auto;max-width:330px;padding:15px;">
 			<h1>Error de acceso</h1>
 			<p>El usuario y la contraseña no coinciden o no existen.</p>
 			<p>Intentalo de nuevo.</p>
-			
+
 			{% csrf_token %}
 			<table>{{formulario}}</table>
 			<a href="{% url 'ptti:reset_password' %}">¿Olvidaste la contrase&ntilde;a?</a>
