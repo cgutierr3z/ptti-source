@@ -14,40 +14,43 @@
 {% block contenido %}
 	<a class="btn btn-primary" href='/grupos/crear'>Crear grupo</a>
   {% if grupos_lista %}
-	<table class="table table-striped">
-        <thead>
-          <tr style="font-weight:bold;text-align:center">
-						<td></td>
-            <td>institucion</td>
-            <td>jornada</td>
-            <td>grado</td>
-            <td>nombre</td>
-            <td>opciones</td>
+	<div class="table-responsive">
+		<table class="table table-striped">
+      <thead>
+        <tr style="font-weight:bold;text-align:center">
+					<td></td>
+          <td>institucion</td>
+          <td>jornada</td>
+          <td>grado</td>
+          <td>nombre</td>
+          <td>opciones</td>
+        </tr>
+      </thead>
+      <tbody>
+				{% for grupo in grupos_lista %}
+          <tr>
+						<td>{{ forloop.counter }}</td>
+            <td><a href="{% url 'ptti:editar_grupo' grupo.id %}">{{ grupo.institucion }}</a></td>
+						<td>{{ grupo.jornada }}</td>
+            <td>{{ grupo.grado }}</td>
+						<td>{{ grupo.nombre }}</td>
+						<td>
+							<a class="btn btn-sm btn-default" href="{% url 'ptti:editar_grupo' grupo.id %}">editar</a>
+							{% if grupo.is_active %}
+								<a class="btn btn-sm btn-danger" href="{% url 'ptti:desactivar_grupo' grupo.id %}">desactivar</a>
+							{% else %}
+						    <a class="btn btn-sm btn-success" href="{% url 'ptti:activar_grupo' grupo.id %}">activar</a>
+						  {% endif %}
+						</td>
           </tr>
-        </thead>
-        <tbody>
-					{% for grupo in grupos_lista %}
-	          <tr>
-							<td>{{ forloop.counter }}</td>
-              <td><a href="{% url 'ptti:editar_grupo' grupo.id %}">{{ grupo.institucion }}</a></td>
-							<td>{{ grupo.jornada }}</td>
-              <td>{{ grupo.grado }}</td>
-							<td>{{ grupo.nombre }}</td>
-							<td>
-								<a class="btn btn-sm btn-default" href="{% url 'ptti:editar_grupo' grupo.id %}">editar</a>
-								{% if grupo.is_active %}
-									<a class="btn btn-sm btn-danger" href="{% url 'ptti:desactivar_grupo' grupo.id %}">desactivar</a>
-								{% else %}
-							    <a class="btn btn-sm btn-success" href="{% url 'ptti:activar_grupo' grupo.id %}">activar</a>
-							  {% endif %}
-							</td>
-            </tr>
-					{% endfor %}
-        </tbody>
-      </table>
-		</table>
+				{% endfor %}
+      </tbody>
+    </table>
+	</div>
 
   {% else %}
-      <p>No grupos</p>
+		<div class="alert alert-danger" role="alert">
+    	<p>No grupos</p>
+		</div>
   {% endif %}
 {% endblock %}

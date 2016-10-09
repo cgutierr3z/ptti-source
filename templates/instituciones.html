@@ -13,45 +13,50 @@
 
 {% block contenido %}
 	<a class="btn btn-primary" href='/instituciones/crear'>Crear institucion</a>
-  {% if instituciones_lista %}
-	<table class="table table-striped">
-        <thead>
-          <tr style="font-weight:bold;text-align:center">
-						<td></td>
-            <td>nit</td>
-            <td>nombre</td>
-            <td>direccion</td>
-            <td>telefono</td>
-            <td>ciudad</td>
-						<td>web</td>
-						<td>opciones</td>
+
+	{% if instituciones_lista %}
+	<div class="table-responsive">
+		<table class="table table-striped">
+      <thead>
+        <tr style="font-weight:bold;text-align:center">
+					<td></td>
+          <td>nit</td>
+          <td>nombre</td>
+          <td>direccion</td>
+          <td>telefono</td>
+          <td>ciudad</td>
+					<td>web</td>
+					<td>opciones</td>
+        </tr>
+      </thead>
+      <tbody>
+				{% for institucion in instituciones_lista %}
+          <tr>
+						<td>{{ forloop.counter }}</td>
+            <td><a href="{% url 'ptti:editar_institucion' institucion.id %}">{{ institucion.nit }}</a></td>
+						<td>{{ institucion.nombre }}</td>
+            <td>{{ institucion.direccion }}</td>
+						<td>{{ institucion.telefono }}</td>
+						<td>{{ institucion.ciudad }}</td>
+						<td>{{ institucion.web }}</td>
+						<td>
+							<a class="btn btn-sm btn-default" href="{% url 'ptti:editar_institucion' institucion.id %}">editar</a>
+							{% if institucion.is_active %}
+								<a class="btn btn-sm btn-danger" href="{% url 'ptti:desactivar_institucion' institucion.id %}">desactivar</a>
+							{% else %}
+						    <a class="btn btn-sm btn-success" href="{% url 'ptti:activar_institucion' institucion.id %}">activar</a>
+						  {% endif %}
+						</td>
           </tr>
-        </thead>
-        <tbody>
-					{% for institucion in instituciones_lista %}
-	          <tr>
-							<td>{{ forloop.counter }}</td>
-              <td><a href="{% url 'ptti:editar_institucion' institucion.id %}">{{ institucion.nit }}</a></td>
-							<td>{{ institucion.nombre }}</td>
-              <td>{{ institucion.direccion }}</td>
-							<td>{{ institucion.telefono }}</td>
-							<td>{{ institucion.ciudad }}</td>
-							<td>{{ institucion.web }}</td>
-							<td>
-								<a class="btn btn-sm btn-default" href="{% url 'ptti:editar_institucion' institucion.id %}">editar</a>
-								{% if institucion.is_active %}
-									<a class="btn btn-sm btn-danger" href="{% url 'ptti:desactivar_institucion' institucion.id %}">desactivar</a>
-								{% else %}
-							    <a class="btn btn-sm btn-success" href="{% url 'ptti:activar_institucion' institucion.id %}">activar</a>
-							  {% endif %}
-							</td>
-            </tr>
-					{% endfor %}
-        </tbody>
-      </table>
-		</table>
+				{% endfor %}
+      </tbody>
+    </table>
+	</div>
 
   {% else %}
-      <p>No instituciones</p>
+			<div class="alert alert-danger" role="alert">
+      	<p>No instituciones</p>
+			</div>
   {% endif %}
+
 {% endblock %}

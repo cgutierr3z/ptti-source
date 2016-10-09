@@ -12,7 +12,8 @@
 {% endblock %}
 
 {% block contenido %}
-	<form id='formulario' method='post' action=''>{% csrf_token %}
+	<form class="form-signin" id='formulario' method='post' action=''>
+		{% csrf_token %}
 		<table>{{formulario}}</table>
 		<p><input class="btn btn-primary" type='submit' value='Ingresar'/></p>
 	</form>

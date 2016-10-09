@@ -9,67 +9,71 @@
 {% endblock %}
 
 {% block menu %}
-	
+
 {% endblock %}
 
 {% block contenido %}
 	<a class="btn btn-primary" href='/usuarios/crear'>Crear usuario</a>
   {% if usuarios_lista %}
-	<table class="table table-striped">
-        <thead>
-          <tr style="font-weight:bold;text-align:center">
-						<td></td>
-            <td>usuario</td>
-            <td>mail</td>
-            <td>nombre</td>
-            <td>apellido</td>
-            <td>tipo-doc</td>
-						<td>num-doc</td>
-						<td>fecha-nac</td>
-						<td>genero</td>
-						<td>direccion</td>
-						<td>telefono</td>
-						<td>permisos</td>
-						<td>opciones</td>
-          </tr>
-        </thead>
-        <tbody>
-					{% for usuario in usuarios_lista %}
-	          <tr>
-							<td>{{ forloop.counter }}</td>
-              <td><a href="{% url 'ptti:editar_usuario' usuario.id %}">{{ usuario.username }}</a></td>
-							<td>{{ usuario.email }}</td>
-              <td>{{ usuario.first_name }}</td>
-              <td>{{ usuario.last_name }}</td>
-							<td>{{ usuario.tipo_docto }}</td>
-							<td>{{ usuario.no_docto }}</td>
-							<td>{{ usuario.fecha_nac }}</td>
-							<td>{{ usuario.genero }}</td>
-							<td>{{ usuario.direccion }}</td>
-							<td>{{ usuario.telefono }}</td>
-							<td>
-								admin <b>{{ usuario.is_administrador }}</b><br />
-								psico <b>{{ usuario.is_psicologo }}</b><br />
-								estud <b>{{ usuario.is_estudiante }}</b><br />
-								activ <b>{{ usuario.is_active }}</b><br />
-								super <b>{{ usuario.is_superuser }}</b><br />
-							</td>
-							<td>
-								<a class="btn btn-sm btn-default" href="{% url 'ptti:editar_usuario' usuario.id %}">editar</a>
-								{% if usuario.is_active %}
-									<a class="btn btn-sm btn-danger" href="{% url 'ptti:desactivar_usuario' usuario.id %}">desactivar</a>
-								{% else %}
-							    <a class="btn btn-sm btn-success" href="{% url 'ptti:activar_usuario' usuario.id %}">activar</a>
-							  {% endif %}
-							</td>
+	<div class="table-responsive">
+		<table class="table table-striped">
+		  <thead>
+		    <tr style="font-weight:bold;text-align:center">
+					<td></td>
+		      <td>usuario</td>
+		      <td>mail</td>
+		      <td>nombre</td>
+		      <td>apellido</td>
+		      <td>tipo-doc</td>
+					<td>num-doc</td>
+					<td>fecha-nac</td>
+					<td>genero</td>
+					<td>direccion</td>
+					<td>telefono</td>
+					<td>permisos</td>
+					<td>opciones</td>
+		    </tr>
+		  </thead>
+	    <tbody>
+				{% for usuario in usuarios_lista %}
+	        <tr>
+						<td>{{ forloop.counter }}</td>
+	          <td><a href="{% url 'ptti:editar_usuario' usuario.id %}">{{ usuario.username }}</a></td>
+						<td>{{ usuario.email }}</td>
+	          <td>{{ usuario.first_name }}</td>
+	          <td>{{ usuario.last_name }}</td>
+						<td>{{ usuario.tipo_docto }}</td>
+						<td>{{ usuario.no_docto }}</td>
+						<td>{{ usuario.fecha_nac }}</td>
+						<td>{{ usuario.genero }}</td>
+						<td>{{ usuario.direccion }}</td>
+						<td>{{ usuario.telefono }}</td>
+						<td>
+							admin <b>{{ usuario.is_administrador }}</b><br />
+							psico <b>{{ usuario.is_psicologo }}</b><br />
+							estud <b>{{ usuario.is_estudiante }}</b><br />
+							activ <b>{{ usuario.is_active }}</b><br />
+							super <b>{{ usuario.is_superuser }}</b><br />
+						</td>
+						<td>
+							<a class="btn btn-sm btn-default" href="{% url 'ptti:editar_usuario' usuario.id %}">editar</a>
+							{% if usuario.is_active %}
+								<a class="btn btn-sm btn-danger" href="{% url 'ptti:desactivar_usuario' usuario.id %}">desactivar</a>
+							{% else %}
+						    <a class="btn btn-sm btn-success" href="{% url 'ptti:activar_usuario' usuario.id %}">activar</a>
+						  {% endif %}
+						</td>
 
-            </tr>
-					{% endfor %}
-        </tbody>
-      </table>
-		</table>
+	        </tr>
+				{% endfor %}
+	    </tbody>
+	  </table>
+	</div>
 
   {% else %}
-      <p>No usuarios</p>
+		<div class="alert alert-danger" role="alert">
+			<p>No usuarios</p>
+		</div>
+
   {% endif %}
 {% endblock %}
