@@ -88,10 +88,10 @@ class Usuario(AbstractUser):
         verbose_name_plural = "Usuarios"
 
     TIPO_DOC_LIST = [
-        ('CC', 'CEDULA CUIDADANIA'),
-        ('CE', 'CEDULA EXTRANJERIA'),
-        ('PAS', 'PASAPORTE'),
-        ('TI', 'TARJETA IDENTIDAD'),
+        ('CEDULA CUIDADANIA', 'CEDULA CUIDADANIA'),
+        ('CEDULA EXTRANJERIA', 'CEDULA EXTRANJERIA'),
+        ('PASAPORTE', 'PASAPORTE'),
+        ('TARJETA IDENTIDAD', 'TARJETA IDENTIDAD'),
     ]
     GENERO_LIST= [
         ('HETEROSEXUAL', 'HETEROSEXUAL'),
