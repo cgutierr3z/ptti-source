@@ -52,7 +52,7 @@ def perfil(request):
 
 @login_required(login_url='/login/')
 def usuarios(request):
-    usuarios_lista = Usuario.objects.order_by('date_joined')
+    usuarios_lista = Usuario.objects.order_by('-date_joined').exclude(id=request.user.id)
     context = {'usuarios_lista': usuarios_lista}
     return render(request, 'usuarios.html', context)
 
