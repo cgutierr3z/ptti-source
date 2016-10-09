@@ -22,7 +22,7 @@ class Institucion(models.Model):
     is_active   = models.BooleanField('Activar',default=True)
 
     def __str__(self):
-        return self.nit +" "-self.nombre
+        return self.nit +" - "+self.nombre
 
     def desactivar(self):
         self.is_active = False
