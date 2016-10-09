@@ -54,7 +54,7 @@ class FormEditarUsuario(UserChangeForm):
 
     class Meta:
         model = Usuario
-        fields = ('username','email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','is_active','is_administrador','is_psicologo')
+        fields = ('username','email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','is_active','is_administrador','is_psicologo','password')
 
     def save(self, commit=True):
         user = super(FormEditarUsuario, self).save(commit=False)
@@ -133,7 +133,7 @@ class FormEditarAdministrador(UserChangeForm):
 
     class Meta:
         model = Administrador
-        fields = ('username','email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','is_active','is_administrador','is_psicologo')
+        fields = ('username','email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','is_active','is_administrador','is_psicologo','password')
 
     def save(self, commit=True):
         user = super(FormEditarAdministrador, self).save(commit=False)
@@ -212,7 +212,7 @@ class FormEditarPsicologo(UserChangeForm):
 
     class Meta:
         model = Psicologo
-        fields = ('username','email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','is_active','is_administrador','is_psicologo')
+        fields = ('username','email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','is_active','is_administrador','is_psicologo','password')
 
     def save(self, commit=True):
         user = super(FormEditarPsicologo, self).save(commit=False)
@@ -292,7 +292,7 @@ class FormEditarEstudiante(UserChangeForm):
 
     class Meta:
         model = Estudiante
-        fields = ('username','email','first_name','last_name','grupo','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','is_active')
+        fields = ('username','email','first_name','last_name','grupo','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','is_active','password')
 
     def save(self, commit=True):
         user = super(FormEditarEstudiante, self).save(commit=False)
@@ -333,7 +333,6 @@ class FormEditarEstudiante(UserChangeForm):
             return instance.password
         else:
             return self.cleaned_data.get('password', None)
-
 
 class FormEditarPerfil(UserChangeForm):
     fecha_nac   = forms.DateField(label='Fecha nacimiento',widget=forms.SelectDateWidget(years=[y for y in range(1990,2017)]),required=True)
