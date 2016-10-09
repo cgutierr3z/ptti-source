@@ -2,3 +2,4 @@ venv/
 .pyc
 *.pyc
 *.sqlite3
+ptti_source/settings.py
