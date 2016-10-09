@@ -2,21 +2,23 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import *
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, ReadOnlyPasswordHashField
+from django.contrib.auth.models import Group
+
+TIPO_DOC_LIST = [
+    ('CEDULA CUIDADANIA', 'CEDULA CUIDADANIA'),
+    ('CEDULA EXTRANJERIA', 'CEDULA EXTRANJERIA'),
+    ('PASAPORTE', 'PASAPORTE'),
+    ('TARJETA IDENTIDAD', 'TARJETA IDENTIDAD'),
+]
+GENERO_LIST= [
+    ('HETEROSEXUAL', 'HETEROSEXUAL'),
+    ('HOMOSEXUAL', 'HOMOSEXUAL'),
+    ('LESBIANA', 'LESBIANA'),
+    ('BISEXUAL', 'BISEXUAL'),
+    ('INDIFERENCIADO', 'INDIFERENCIADO'),
+]
 
 class FormCrearUsuario(UserCreationForm):
-    TIPO_DOC_LIST = [
-        ('CC', 'CEDULA CUIDADANIA'),
-        ('CE', 'CEDULA EXTRANJERIA'),
-        ('PAS', 'PASAPORTE'),
-        ('TI', 'TARJETA IDENTIDAD'),
-    ]
-    GENERO_LIST= [
-        ('HT', 'HETEROSEXUAL'),
-        ('HM', 'HOMOSEXUAL'),
-        ('LE', 'LESBIANA'),
-        ('BI', 'BISEXUAL'),
-        ('IN', 'INDIFERENCIADO'),
-    ]
     email       = forms.EmailField(label='Correo electronico',required=True)
     first_name  = forms.CharField(label='Nombres',required=True)
     last_name   = forms.CharField(label='Apellidos',required=True)
@@ -29,17 +31,20 @@ class FormCrearUsuario(UserCreationForm):
     is_active       = forms.BooleanField(label='Activo',required=False)
     is_administrador= forms.BooleanField(label='Administrador',required=False)
     is_psicologo    = forms.BooleanField(label='Psicologo',required=False)
-    is_estudiante   = forms.BooleanField(label='Estudiante',required=False)
-
 
     class Meta:
         model = Usuario
-        fields = ('username','email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','password1', 'password2','is_active','is_administrador','is_psicologo','is_estudiante')
+        fields = ('username','email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','password1', 'password2','is_active','is_administrador','is_psicologo')
 
     def save(self, commit=True):
-        user = super(FormNuevoUsuario, self).save(commit=False)
+        user = super(FormCrearUsuario, self).save(commit=False)
         user.email = self.cleaned_data['email']
         if commit:
+            user.save()
+            if user.is_administrador:
+                user.groups.add(Group.objects.get(name='administrador'))
+            if user.is_psicologo:
+                user.groups.add(Group.objects.get(name='psicologo'))
             user.save()
         return user
 
@@ -49,8 +54,22 @@ class FormEditarUsuario(UserChangeForm):
 
     class Meta:
         model = Usuario
-        fields = ('username','email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','is_active','is_administrador','is_psicologo','is_estudiante')
+        fields = ('username','email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','is_active','is_administrador','is_psicologo')
 
+    def save(self, commit=True):
+        user = super(FormEditarUsuario, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        if user.is_administrador:
+            user.groups.add(Group.objects.get(name='administrador'))
+        else:
+            user.groups.remove(Group.objects.get(name='administrador'))
+        if user.is_psicologo:
+            user.groups.add(Group.objects.get(name='psicologo'))
+        else:
+            user.groups.remove(Group.objects.get(name='psicologo'))
+        if commit:
+            user.save()
+        return user
 
     def __init__(self, *args, **kwargs):
         super(FormEditarUsuario, self).__init__(*args, **kwargs)
@@ -60,7 +79,6 @@ class FormEditarUsuario(UserChangeForm):
             self.fields['username'].widget.attrs['disabled'] = 'disabled'
 
     def clean_username(self):
-        # As shown in the above answer.
         instance = getattr(self, 'instance', None)
         if instance:
             try:
@@ -72,7 +90,6 @@ class FormEditarUsuario(UserChangeForm):
             return self.cleaned_data.get('username', None)
 
     def clean_password(self):
-        # As shown in the above answer.
         instance = getattr(self, 'instance', None)
         if instance:
             try:
@@ -83,24 +100,64 @@ class FormEditarUsuario(UserChangeForm):
         else:
             return self.cleaned_data.get('password', None)
 
-class FormEditarPerfil(UserChangeForm):
+class FormCrearAdministrador(UserCreationForm):
+    email       = forms.EmailField(label='Correo electronico',required=True)
+    first_name  = forms.CharField(label='Nombres',required=True)
+    last_name   = forms.CharField(label='Apellidos',required=True)
+    tipo_docto  = forms.ChoiceField(label='Tipo documento',choices = TIPO_DOC_LIST, initial='', widget=forms.Select(), required=True)
+    no_docto    = forms.CharField(label='Numero documento',required=True)
+    fecha_nac   = forms.DateField(label='Fecha nacimiento',widget=forms.SelectDateWidget(years=[y for y in range(1990,2017)]),required=True)
+    genero      = forms.ChoiceField(label='Genero',choices = GENERO_LIST, initial='', widget=forms.Select(), required=True)
+    direccion   = forms.CharField(label='Direccion',required=True)
+    telefono    = forms.CharField(label='Telefono',required=True)
+    is_active       = forms.BooleanField(label='Activo',required=False)
+    is_administrador= forms.BooleanField(label='Administrador',required=False)
+    is_psicologo    = forms.BooleanField(label='Psicologo',required=False)
+
+    class Meta:
+        model = Administrador
+        fields = ('username','email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','password1', 'password2','is_active','is_administrador','is_psicologo')
+
+    def save(self, commit=True):
+        user = super(FormCrearAdministrador, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+            user.groups.add(Group.objects.get(name='administrador'))
+            user.save()
+        return user
+
+class FormEditarAdministrador(UserChangeForm):
     fecha_nac   = forms.DateField(label='Fecha nacimiento',widget=forms.SelectDateWidget(years=[y for y in range(1990,2017)]),required=True)
     password = ReadOnlyPasswordHashField()
 
     class Meta:
-        model = Usuario
-        fields = ('username','email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','password')
+        model = Administrador
+        fields = ('username','email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','is_active','is_administrador','is_psicologo')
 
+    def save(self, commit=True):
+        user = super(FormEditarAdministrador, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        if user.is_administrador:
+            user.groups.add(Group.objects.get(name='administrador'))
+        else:
+            user.groups.remove(Group.objects.get(name='administrador'))
+        if user.is_psicologo:
+            user.groups.add(Group.objects.get(name='psicologo'))
+        else:
+            user.groups.remove(Group.objects.get(name='psicologo'))
+        if commit:
+            user.save()
+        return user
 
     def __init__(self, *args, **kwargs):
-        super(FormEditarPerfil, self).__init__(*args, **kwargs)
+        super(FormEditarAdministrador, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         if instance and instance.id:
             self.fields['username'].required = False
             self.fields['username'].widget.attrs['disabled'] = 'disabled'
 
     def clean_username(self):
-        # As shown in the above answer.
         instance = getattr(self, 'instance', None)
         if instance:
             try:
@@ -112,7 +169,199 @@ class FormEditarPerfil(UserChangeForm):
             return self.cleaned_data.get('username', None)
 
     def clean_password(self):
-        # As shown in the above answer.
+        instance = getattr(self, 'instance', None)
+        if instance:
+            try:
+                self.changed_data.remove('password')
+            except ValueError, e:
+                pass
+            return instance.password
+        else:
+            return self.cleaned_data.get('password', None)
+
+class FormCrearPsicologo(UserCreationForm):
+    email       = forms.EmailField(label='Correo electronico',required=True)
+    first_name  = forms.CharField(label='Nombres',required=True)
+    last_name   = forms.CharField(label='Apellidos',required=True)
+    tipo_docto  = forms.ChoiceField(label='Tipo documento',choices = TIPO_DOC_LIST, initial='', widget=forms.Select(), required=True)
+    no_docto    = forms.CharField(label='Numero documento',required=True)
+    fecha_nac   = forms.DateField(label='Fecha nacimiento',widget=forms.SelectDateWidget(years=[y for y in range(1990,2017)]),required=True)
+    genero      = forms.ChoiceField(label='Genero',choices = GENERO_LIST, initial='', widget=forms.Select(), required=True)
+    direccion   = forms.CharField(label='Direccion',required=True)
+    telefono    = forms.CharField(label='Telefono',required=True)
+    is_active       = forms.BooleanField(label='Activo',required=False)
+    is_administrador= forms.BooleanField(label='Administrador',required=False)
+    is_psicologo    = forms.BooleanField(label='Psicologo',required=False)
+
+    class Meta:
+        model = Psicologo
+        fields = ('username','email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','password1', 'password2','is_active','is_administrador','is_psicologo')
+
+    def save(self, commit=True):
+        user = super(FormCrearPsicologo, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+            user.groups.add(Group.objects.get(name='psicologo'))
+            user.save()
+        return user
+
+class FormEditarPsicologo(UserChangeForm):
+    fecha_nac   = forms.DateField(label='Fecha nacimiento',widget=forms.SelectDateWidget(years=[y for y in range(1990,2017)]),required=True)
+    password = ReadOnlyPasswordHashField()
+
+    class Meta:
+        model = Psicologo
+        fields = ('username','email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','is_active','is_administrador','is_psicologo')
+
+    def save(self, commit=True):
+        user = super(FormEditarPsicologo, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        if user.is_administrador:
+            user.groups.add(Group.objects.get(name='administrador'))
+        else:
+            user.groups.remove(Group.objects.get(name='administrador'))
+        if user.is_psicologo:
+            user.groups.add(Group.objects.get(name='psicologo'))
+        else:
+            user.groups.remove(Group.objects.get(name='psicologo'))
+        if commit:
+            user.save()
+        return user
+
+    def __init__(self, *args, **kwargs):
+        super(FormEditarPsicologo, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance and instance.id:
+            self.fields['username'].required = False
+            self.fields['username'].widget.attrs['disabled'] = 'disabled'
+
+    def clean_username(self):
+        instance = getattr(self, 'instance', None)
+        if instance:
+            try:
+                self.changed_data.remove('username')
+            except ValueError, e:
+                pass
+            return instance.username
+        else:
+            return self.cleaned_data.get('username', None)
+
+    def clean_password(self):
+        instance = getattr(self, 'instance', None)
+        if instance:
+            try:
+                self.changed_data.remove('password')
+            except ValueError, e:
+                pass
+            return instance.password
+        else:
+            return self.cleaned_data.get('password', None)
+
+class FormCrearEstudiante(UserCreationForm):
+    email       = forms.EmailField(label='Correo electronico',required=True)
+    first_name  = forms.CharField(label='Nombres',required=True)
+    last_name   = forms.CharField(label='Apellidos',required=True)
+    tipo_docto  = forms.ChoiceField(label='Tipo documento',choices = TIPO_DOC_LIST, initial='', widget=forms.Select(), required=True)
+    no_docto    = forms.CharField(label='Numero documento',required=True)
+    fecha_nac   = forms.DateField(label='Fecha nacimiento',widget=forms.SelectDateWidget(years=[y for y in range(1990,2017)]),required=True)
+    genero      = forms.ChoiceField(label='Genero',choices = GENERO_LIST, initial='', widget=forms.Select(), required=True)
+    direccion   = forms.CharField(label='Direccion',required=True)
+    telefono    = forms.CharField(label='Telefono',required=True)
+    is_active   = forms.BooleanField(label='Activo',required=False)
+
+    class Meta:
+        model = Estudiante
+        fields = ('username','email','first_name','last_name','grupo','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','password1', 'password2','is_active')
+
+    def save(self, commit=True):
+        user = super(FormCrearEstudiante, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        user.is_estudiante = True
+
+        if commit:
+            user.save()
+            user.groups.add(Group.objects.get(name='estudiante'))
+            user.save()
+
+        return user
+
+class FormEditarEstudiante(UserChangeForm):
+    fecha_nac   = forms.DateField(label='Fecha nacimiento',widget=forms.SelectDateWidget(years=[y for y in range(1990,2017)]),required=True)
+    password    = ReadOnlyPasswordHashField()
+
+    class Meta:
+        model = Estudiante
+        fields = ('username','email','first_name','last_name','grupo','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','is_active')
+
+    def save(self, commit=True):
+        user = super(FormEditarEstudiante, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        if user.is_estudiante:
+            user.groups.add(Group.objects.get(name='estudiante'))
+        else:
+            user.groups.remove(Group.objects.get(name='estudiante'))
+        if commit:
+            user.save()
+        return user
+
+    def __init__(self, *args, **kwargs):
+        super(FormEditarEstudiante, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance and instance.id:
+            self.fields['username'].required = False
+            self.fields['username'].widget.attrs['disabled'] = 'disabled'
+
+    def clean_username(self):
+        instance = getattr(self, 'instance', None)
+        if instance:
+            try:
+                self.changed_data.remove('username')
+            except ValueError, e:
+                pass
+            return instance.username
+        else:
+            return self.cleaned_data.get('username', None)
+
+    def clean_password(self):
+        instance = getattr(self, 'instance', None)
+        if instance:
+            try:
+                self.changed_data.remove('password')
+            except ValueError, e:
+                pass
+            return instance.password
+        else:
+            return self.cleaned_data.get('password', None)
+
+
+class FormEditarPerfil(UserChangeForm):
+    fecha_nac   = forms.DateField(label='Fecha nacimiento',widget=forms.SelectDateWidget(years=[y for y in range(1990,2017)]),required=True)
+    password = ReadOnlyPasswordHashField()
+
+    class Meta:
+        model = Usuario
+        fields = ('username','email','first_name','last_name','tipo_docto','no_docto','fecha_nac','genero','direccion','telefono','password')
+
+    def __init__(self, *args, **kwargs):
+        super(FormEditarPerfil, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance and instance.id:
+            self.fields['username'].required = False
+            self.fields['username'].widget.attrs['disabled'] = 'disabled'
+
+    def clean_username(self):
+        instance = getattr(self, 'instance', None)
+        if instance:
+            try:
+                self.changed_data.remove('username')
+            except ValueError, e:
+                pass
+            return instance.username
+        else:
+            return self.cleaned_data.get('username', None)
+
+    def clean_password(self):
         instance = getattr(self, 'instance', None)
         if instance:
             try:
@@ -124,13 +373,6 @@ class FormEditarPerfil(UserChangeForm):
             return self.cleaned_data.get('password', None)
 
 class FormInstitucion(forms.ModelForm):
-    # nit         = models.CharField(max_length=200,unique=True)
-    # nombre      = models.CharField(max_length=200)
-    # direccion   = models.CharField(max_length=200)
-    # telefono    = models.CharField(max_length=200)
-    # cuidad      = models.CharField(max_length=200)
-    # web         = models.URLField(max_length=200)
-
     class Meta:
         model = Institucion
         fields = ['nit', 'nombre', 'direccion','telefono','ciudad','web','is_active']

@@ -118,28 +118,28 @@ class Usuario(AbstractUser):
         self.is_active = True
 
 
-class Administrador(models.Model):
+class Administrador(Usuario):
     class Meta:
         verbose_name = "Administrador"
         verbose_name_plural = "Administradores"
 
-    user        = models.OneToOneField(Usuario, on_delete=models.CASCADE)
+    #user        = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     #active      = models.BooleanField(default=True)
 
-class Psicologo(models.Model):
+class Psicologo(Usuario):
     class Meta:
         verbose_name = "Psicologo"
         verbose_name_plural = "Psicologos"
 
-    user        = models.OneToOneField(Usuario, on_delete=models.CASCADE)
+    #user        = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     #active      = models.BooleanField(default=True)
 
-class Estudiante(models.Model):
+class Estudiante(Usuario):
     class Meta:
         verbose_name = "Estudiante"
         verbose_name_plural = "Estudiantes"
 
-    user        = models.OneToOneField(Usuario, on_delete=models.CASCADE)
+    #user        = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     #active      = models.BooleanField(default=True)
     grupo       = models.ForeignKey(Grupo, on_delete=models.CASCADE)
 

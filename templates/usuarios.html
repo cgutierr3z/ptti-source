@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block contenido %}
-	<a class="btn btn-primary" href='/usuarios/crear'>Crear usuario</a>
+	<a class="btn btn-primary" href='crear'>Crear usuario</a>
   {% if usuarios_lista %}
 	<div class="table-responsive">
 		<table class="table table-striped">
@@ -38,7 +38,7 @@
 				{% for usuario in usuarios_lista %}
 	        <tr>
 						<td>{{ forloop.counter }}</td>
-	          <td><a href="{% url 'ptti:editar_usuario' usuario.id %}">{{ usuario.username }}</a></td>
+	          <td>{{ usuario.username }}</td>
 						<td>{{ usuario.email }}</td>
 	          <td>{{ usuario.first_name }}</td>
 	          <td>{{ usuario.last_name }}</td>
@@ -56,13 +56,22 @@
 							super <b>{{ usuario.is_superuser }}</b><br />
 						</td>
 						<td>
+							<a class="btn btn-sm btn-default" href="editar/{{ usuario.id }}">editar</a>
+							{% if usuario.is_active %}
+								<a class="btn btn-sm btn-danger" href="desactivar/{{ usuario.id }}">desactivar</a>
+							{% else %}
+						    <a class="btn btn-sm btn-success" href="activar/{{ usuario.id }}">activar</a>
+						  {% endif %}
+						</td>
+
+						<!-- <td>
 							<a class="btn btn-sm btn-default" href="{% url 'ptti:editar_usuario' usuario.id %}">editar</a>
 							{% if usuario.is_active %}
 								<a class="btn btn-sm btn-danger" href="{% url 'ptti:desactivar_usuario' usuario.id %}">desactivar</a>
 							{% else %}
 						    <a class="btn btn-sm btn-success" href="{% url 'ptti:activar_usuario' usuario.id %}">activar</a>
 						  {% endif %}
-						</td>
+						</td> -->
 
 	        </tr>
 				{% endfor %}
