@@ -7,7 +7,10 @@ urlpatterns = [
     url(r'^$', views.login, name='index'),
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout, name='logout'),
-    
+    url(r'^password-reset/$', views.reset_password, name='reset_password'),
+    url(r'^password-reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',views.reset_password_confirm, name='reset_password_confirm'),
+
+
     url(r'^perfil/$', views.perfil, name='perfil'),
     url(r'^perfil/editar/(?P<user_id>[0-9]+)$',views.perfil_editar, name='perfil_editar'),
     url(r'^perfil/contrasena/(?P<user_id>[0-9]+)$', views.perfil_cambiar_contrasena, name='perfil_cambiar_contrasena'),

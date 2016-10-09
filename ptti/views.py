@@ -1,13 +1,16 @@
 from django.shortcuts import render
 
 # Create your views here.
-from django.contrib.auth.models import User
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response, get_object_or_404, render
-from django.template import RequestContext
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, PasswordResetForm, PasswordChangeForm
+#from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+#from django.template import RequestContext
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, PasswordResetForm, PasswordChangeForm, PasswordResetForm
 from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import password_reset, password_reset_confirm
+from django.core.urlresolvers import reverse
+
 from .forms import *
 from .models import *
 
@@ -37,6 +40,16 @@ def login(request):
     else:
         formulario = AuthenticationForm()
     return render(request,'login.html',{'formulario':formulario,'guest':guest})
+
+def reset_password(request):
+    return password_reset(request, template_name='password_reset_form.html',
+        email_template_name='password_reset_email.html',
+        subject_template_name='password_reset_subject.txt',
+        post_reset_redirect=reverse('ptti:login'))
+
+def reset_password_confirm(request, uidb64=None, token=None):
+    return password_reset_confirm(request, template_name='password_reset_confirm.html',
+        uidb64=uidb64, token=token, post_reset_redirect=reverse('ptti:login'))
 
 @login_required(login_url='/login/')
 def logout(request):

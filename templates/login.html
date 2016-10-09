@@ -15,6 +15,9 @@
 	<form class="form-signin" id='formulario' method='post' action=''>
 		{% csrf_token %}
 		<table>{{formulario}}</table>
-		<p><input class="btn btn-primary" type='submit' value='Ingresar'/></p>
+		<p>
+			<input class="btn btn-primary" type='submit' value='Ingresar'/>
+			<a class="btn btn-default" href="{% url 'ptti:reset_password' %}">¿Olvidaste la contrase&ntilde;a?</a>
+		</p>
 	</form>
 {% endblock %}
