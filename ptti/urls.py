@@ -7,8 +7,12 @@ urlpatterns = [
     url(r'^$', views.login, name='index'),
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout, name='logout'),
-    url(r'^perfil/$', views.perfil, name='perfil'),
     
+    url(r'^perfil/$', views.perfil, name='perfil'),
+    url(r'^perfil/editar/(?P<user_id>[0-9]+)$',views.perfil_editar, name='perfil_editar'),
+    url(r'^perfil/contrasena/(?P<user_id>[0-9]+)$', views.perfil_cambiar_contrasena, name='perfil_cambiar_contrasena'),
+
+
     url(r'^usuarios/$',views.usuarios, name='usuarios'),
     url(r'^usuarios/crear$',views.crear_usuario, name='crear_usuario'),
     url(r'^usuarios/editar/(?P<user_id>[0-9]+)$',views.editar_usuario, name='editar_usuario'),

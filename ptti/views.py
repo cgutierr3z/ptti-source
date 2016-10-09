@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404, render
 from django.template import RequestContext
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, PasswordResetForm, PasswordChangeForm
 from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from .forms import *
@@ -43,10 +43,39 @@ def logout(request):
     auth_logout(request)
     return HttpResponseRedirect('/')
 
+
+#vista de perfil
+
 @login_required(login_url='/login/')
 def perfil(request):
     usuario = request.user
     return  render(request,'perfil.html', {'usuario':usuario})
+
+
+@login_required(login_url='/login')
+def perfil_editar(request, user_id):
+    user = get_object_or_404(Usuario, pk=user_id)
+    if request.method=='POST':
+        formulario = FormEditarPerfil(request.POST, instance=user)
+        if formulario.is_valid():
+            formulario.save()
+            return HttpResponseRedirect('/perfil')
+    else:
+        formulario = FormEditarPerfil(instance=user)
+    return render(request, 'perfil_editar.html', {'formulario':formulario,'usuario':user})
+
+@login_required(login_url='/login')
+def perfil_cambiar_contrasena(request, user_id):
+    user = get_object_or_404(Usuario, pk=user_id)
+    formulario = PasswordChangeForm(user)
+    if request.method=='POST':
+        formulario = PasswordChangeForm(user, request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            update_session_auth_hash(request, formulario.user)
+            return HttpResponseRedirect('/perfil')
+
+    return render(request, 'perfil_cambiar_contrasena.html', {'formulario':formulario})
 
 #vistas de usuarios
 
@@ -59,12 +88,12 @@ def usuarios(request):
 @login_required(login_url='/login/')
 def crear_usuario(request):
     if request.method=='POST':
-        formulario = FormNuevoUsuario(request.POST)
+        formulario = FormCrearUsuario(request.POST)
         if formulario.is_valid():
             formulario.save()
             return HttpResponseRedirect('/usuarios')
     else:
-        formulario = FormNuevoUsuario()
+        formulario = FormCrearUsuario()
     return render(request, 'usuario_crear.html', {'formulario':formulario})
 
 @login_required(login_url='/login')
@@ -92,6 +121,7 @@ def activar_usuario(request, user_id):
     user.activar()
     user.save()
     return HttpResponseRedirect('/usuarios')
+
 
 #vistas instituciones
 

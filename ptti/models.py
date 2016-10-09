@@ -22,7 +22,7 @@ class Institucion(models.Model):
     is_active   = models.BooleanField('Activar',default=True)
 
     def __str__(self):
-        return self.nombre
+        return self.nit +" "-self.nombre
 
     def desactivar(self):
         self.is_active = False
@@ -37,11 +37,11 @@ class Grupo(models.Model):
         verbose_name_plural = "Grupos"
 
     JORNADA_LIST = [
-        ('M', 'MANANA'),
-        ('T', 'TARDE'),
-        ('U', 'UNICA'),
-        ('N', 'NOCTURNA'),
-        ('S', 'SABATINA'),
+        ('MANANA', 'MANANA'),
+        ('TARDE', 'TARDE'),
+        ('UNICA', 'UNICA'),
+        ('NOCTURNA', 'NOCTURNA'),
+        ('SABATINA', 'SABATINA'),
     ]
     GRADOS_LIST = [
         ('PRIMARIA',(
@@ -94,11 +94,11 @@ class Usuario(AbstractUser):
         ('TI', 'TARJETA IDENTIDAD'),
     ]
     GENERO_LIST= [
-        ('HT', 'HETEROSEXUAL'),
-        ('HM', 'HOMOSEXUAL'),
-        ('LE', 'LESBIANA'),
-        ('BI', 'BISEXUAL'),
-        ('IN', 'INDIFERENCIADO'),
+        ('HETEROSEXUAL', 'HETEROSEXUAL'),
+        ('HOMOSEXUAL', 'HOMOSEXUAL'),
+        ('LESBIANA', 'LESBIANA'),
+        ('BISEXUAL', 'BISEXUAL'),
+        ('INDIFERENCIADO', 'INDIFERENCIADO'),
     ]
 
     is_administrador    = models.BooleanField('Administrador',default=False)

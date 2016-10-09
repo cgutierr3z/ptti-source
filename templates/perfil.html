@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block titulo %}
-	Bienvenido
+	Perfil
 {% endblock %}
 
 {% block encabezado %}
@@ -12,7 +12,48 @@
 {% endblock %}
 
 {% block contenido %}
-	<p>Bievenido {{usuario.username|upper}},
-		la última vez que te vimos por aquí fue el {{usuario.last_login}}.</p>
-	<p>Eres miembro desde el {{usuario.date_joined}}</p>
+	<div class="table-responsive">
+		<table class="table table-striped">
+			<tbody>
+				<tr>
+					<td><b>Nombres:</b></td>
+					<td>{{usuario.first_name|upper}}</td>
+				</tr>
+				<tr>
+					<td><b>Apellidos:</b></td>
+					<td>{{usuario.last_name|upper}}</td>
+				</tr>
+				<tr>
+					<td><b>Tipo documento:</b></td>
+					<td>{{usuario.tipo_docto|upper}}</td>
+				</tr>
+				<tr>
+					<td><b>No. documento:</b></td>
+					<td>{{usuario.no_docto|upper}}</td>
+				</tr>
+				<tr>
+					<td><b>Fecha nacimiento:</b></td>
+					<td>{{usuario.fecha_nac|upper}}</td>
+				</tr>
+				<tr>
+					<td><b>Genero:</b></td>
+					<td>{{usuario.genero|upper}}</td>
+				</tr>
+				<tr>
+					<td><b>Direcci&oacute;n:</b></td>
+					<td>{{usuario.direccion|upper}}</td>
+				</tr>
+				<tr>
+					<td><b>Telefono:</b></td>
+					<td>{{usuario.telefono|upper}}</td>
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+
+	<a class="btn btn-default" href="{% url 'ptti:perfil_editar' usuario.id %}">Editar informaci&oacute;n personal</a>
+
+
+
 {% endblock %}

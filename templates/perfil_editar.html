@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+	Editar informaci&oacute;n personal
+{% endblock %}
+
+{% block encabezado %}
+	<h1>Editar informaci&oacute;n personal</h1>
+{% endblock %}
+
+{% block menu %}
+
+{% endblock %}
+
+{% block contenido %}
+	<form id='formulario' method='post' action=''>
+		{% csrf_token %}
+		<table>{{formulario}}</table>
+		<p>
+			<input class="btn btn-primary" type='submit' value='Guardar'/>
+			<a class="btn btn-default" href="{% url 'ptti:perfil_cambiar_contrasena' usuario.id %}">Cambiar contrase&ntilde;a</a>
+		</p>
+	</form>
+{% endblock %}

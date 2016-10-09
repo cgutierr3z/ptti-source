@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+	Cambiar contrase&ntilde;a
+{% endblock %}
+
+{% block encabezado %}
+	<h1>Cambiar contrase&ntilde;a</h1>
+{% endblock %}
+
+{% block menu %}
+
+{% endblock %}
+
+{% block contenido %}
+	<form id='formulario' method='post' action=''>
+		{% csrf_token %}
+		<table>{{formulario}}</table>
+		<p><input class="btn btn-primary" type='submit' value='Cambiar'/></p>
+	</form>
+{% endblock %}
