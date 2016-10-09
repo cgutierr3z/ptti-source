@@ -38,7 +38,7 @@
 				{% for usuario in usuarios_lista %}
 	        <tr>
 						<td>{{ forloop.counter }}</td>
-	          <td>{{ usuario.username }}</td>
+	          <td><a href="editar/{{ usuario.id }}">{{ usuario.username }}</a></td>
 						<td>{{ usuario.email }}</td>
 	          <td>{{ usuario.first_name }}</td>
 	          <td>{{ usuario.last_name }}</td>
