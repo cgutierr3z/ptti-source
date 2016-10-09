@@ -42,7 +42,7 @@
                   <li><a href='/administradores/'>Administradores</a></li>
                 {% endif %}
 
-                {% if request.user.is_administrador  %}
+                {% if request.user.is_administrador or request.user.is_superuser  %}
                   <li><a href='/psicologos/'>Psicologos</a></li>
                   <li><a href='/estudiantes/'>Estudiantes</a></li>
                   <li><a href='/instituciones/'>Instituciones</a></li>
@@ -51,7 +51,7 @@
 
               </ul>
               <ul class="nav navbar-nav navbar-right">
-                <li><a href='/logout'>{{ request.user.username|upper }} Logout</a></li>
+                <li><a href='/logout'><b>{{ request.user.username|upper }}</b> Logout</a></li>
               </ul>
               {% endif %}
 
