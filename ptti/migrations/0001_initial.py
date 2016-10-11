@@ -9,32 +9,6 @@ from django.db import migrations, models
 import django.db.models.deletion
 import django.utils.timezone
 
-def add_group_permissions():
-    #administrador
-    group, created = Group.objects.get_or_create(name='administrador')
-    if created:
-        group.permissions.add(change_psicologo)
-        group.permissions.add(add_psicologo)
-        group.permissions.add(change_estudiante)
-        group.permissions.add(add_estudiante)
-        group.permissions.add(change_institucion)
-        group.permissions.add(add_institucion)
-        group.permissions.add(change_grupo)
-        group.permissions.add(add_grupo)
-        logger.info('administrador Group created')
-
-    #psicologo
-    group, created = Group.objects.get_or_create(name='psicologo')
-    if created:
-        group.permissions.add(can_edit_users)
-        logger.info('psicologo Group created')
-
-    #estudiante
-    group, created = Group.objects.get_or_create(name='estudiante')
-    if created:
-        group.permissions.add(can_edit_campaign, can_edit_users)
-        logger.info('estudiante Group created')
-
 class Migration(migrations.Migration):
 
     initial = True
@@ -256,5 +230,4 @@ class Migration(migrations.Migration):
             name='grupo',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ptti.Grupo'),
         ),
-        migrations.RunPython(add_group_permissions),
     ]

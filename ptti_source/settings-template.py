@@ -124,12 +124,11 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 #Configuraciones para enviar mensajes usando gmail
-EMAIL_BACKEND 		= 'django.core.mail.backends.smtp.EmailBackend'
-#EMAIL_USE_TLS 		= True
-EMAIL_USE_SSL 		= True
-EMAIL_HOST 			= 'smtpserver.yourproject.com'
-EMAIL_HOST_USER 	= 'email@yourproject.com'
-EMAIL_HOST_PASSWORD = 'password'
-EMAIL_PORT 			= ##
-DEFAULT_FROM_EMAIL 	= EMAIL_HOST_USER
-SERVER_EMAIL 		= EMAIL_HOST_USER
+# EMAIL_BACKEND 		= 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_USE_SSL 		= True
+# EMAIL_HOST 			= 'smtpserver.yourproject.com'
+# EMAIL_HOST_USER 	    = 'email@yourproject.com'
+# EMAIL_HOST_PASSWORD   = 'password'
+# EMAIL_PORT 			= ##
+# DEFAULT_FROM_EMAIL 	= EMAIL_HOST_USER
+# SERVER_EMAIL 		    = EMAIL_HOST_USER
