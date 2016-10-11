@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'ptti',
+    #'ptti',
     'ptti.apps.PttiConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
 ]
 
+LOGGING_CONFIG = None
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
