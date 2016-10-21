@@ -26,9 +26,16 @@ def login(request):
     if request.method == 'POST':
         formulario = AuthenticationForm(request.POST)
         if formulario.is_valid:
-            usuario = request.POST['username']
+            email = request.POST['username']
             clave = request.POST['password']
-            acceso = authenticate(username=usuario, password=clave)
+
+            usuario = Usuario.objects.filter(email=email)
+            if len(usuario) == 1:
+                usuario = Usuario.objects.filter(email=email)
+                acceso = authenticate(username=usuario[0].username, password=clave)
+            else:
+                acceso = authenticate(username=None, password=clave)
+
             if acceso is not None:
                 if not acceso.is_active:
                     return render(request,'login_error.html')
@@ -39,7 +46,7 @@ def login(request):
                 return render(request,'login_error.html',{'formulario':formulario})
     else:
         formulario = AuthenticationForm()
-    return render(request,'login.html',{'formulario':formulario,'guest':guest})
+    return render(request,'login.html',{'formulario':formulario})
 
 def reset_password(request):
     return password_reset(request, template_name='password_reset_form.html',

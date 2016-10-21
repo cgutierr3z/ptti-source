@@ -135,7 +135,6 @@ class Grupo(models.Model):
         self.is_active = True
 
 
-
 class Estudiante(Usuario):
     class Meta:
         verbose_name = "Estudiante"

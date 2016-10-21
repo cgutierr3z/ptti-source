@@ -42,7 +42,7 @@
                   <li><a href='/administradores/'>Administradores</a></li>
                 {% endif %}
 
-                {% if request.user.is_administrador or request.user.is_superuser  %}
+                {% if request.user.is_administrador %}
                   <li><a href='/psicologos/'>Psicologos</a></li>
                   <li><a href='/estudiantes/'>Estudiantes</a></li>
                   <li><a href='/instituciones/'>Instituciones</a></li>
