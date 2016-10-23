@@ -30,13 +30,14 @@
 					<td>genero</td>
 					<td>direccion</td>
 					<td>telefono</td>
-					<td>permisos</td>
+					<!-- <td>permisos</td>-->
+					<td>grupos</td>
 					<td>opciones</td>
 		    </tr>
 		  </thead>
 	    <tbody>
 				{% for usuario in usuarios_lista %}
-	        <tr>
+	        <tr style="text-align:center">
 						<td>{{ forloop.counter }}</td>
 	          <td><a href="editar/{{ usuario.id }}">{{ usuario.username }}</a></td>
 						<td>{{ usuario.email }}</td>
@@ -48,12 +49,24 @@
 						<td>{{ usuario.genero }}</td>
 						<td>{{ usuario.direccion }}</td>
 						<td>{{ usuario.telefono }}</td>
-						<td>
+						<!-- <td>
 							admin <b>{{ usuario.is_administrador }}</b><br />
 							psico <b>{{ usuario.is_psicologo }}</b><br />
 							estud <b>{{ usuario.is_estudiante }}</b><br />
 							activ <b>{{ usuario.is_active }}</b><br />
 							super <b>{{ usuario.is_superuser }}</b><br />
+						</td>-->
+						<td>
+						{% if usuario.is_psicologo %}
+							{% for grupo in grupos_lista %}
+								{% if grupo.psicologo|stringformat:"s" == usuario.username|stringformat:"s" %}
+								   {{grupo.nombre}}<br/>
+								{% endif %}
+							{% endfor %}
+						<a class="btn btn-sm btn-success" href="{% url 'ptti:asignar_psicologo_grupo' usuario.id %}">Asignar grupo</a>		
+						{% else %}
+							{{usuario.grupo}}
+						{% endif %}
 						</td>
 						<td>
 							<a class="btn btn-sm btn-default" href="editar/{{ usuario.id }}">editar</a>
@@ -65,6 +78,7 @@
 						</td>
 
 						<!-- <td>
+						Grupo.objects.filter(Grupo.psicologo=usuario.username).select_related() 
 							<a class="btn btn-sm btn-default" href="{% url 'ptti:editar_usuario' usuario.id %}">editar</a>
 							{% if usuario.is_active %}
 								<a class="btn btn-sm btn-danger" href="{% url 'ptti:desactivar_usuario' usuario.id %}">desactivar</a>

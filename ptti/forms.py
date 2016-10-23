@@ -380,3 +380,37 @@ class FormGrupo(forms.ModelForm):
     class Meta:
         model = Grupo
         fields = ['institucion', 'jornada', 'grado','nombre','psicologo','is_active']
+
+class FormTestTI(forms.ModelForm):
+    class Meta:
+        model = TestTI
+        fields = ['nombre']
+
+class FormPreguntaTestTI(forms.ModelForm):
+    class Meta:
+        model = PreguntaTestTI
+        fields = ['test','pregunta','numero']
+
+class FormRespuestaTestTI(forms.ModelForm):
+    class Meta:
+        model = RespuestaTestTI
+        fields = ['pregunta','respuesta']
+
+class FormTestAsignado(forms.ModelForm):
+    class Meta:
+        model = TestAsignado
+        fields = ['estudiante','test','estado']
+
+class FormAsignarGrupoPsicologo(forms.ModelForm):
+    class Meta:
+        model = Grupo
+        fields = ['nombre','psicologo']
+
+class FormAsignarPsicologoGrupo(forms.ModelForm):
+    nombre = forms.ModelChoiceField(label='Nombre del grupo', queryset=Grupo.objects.all().filter(psicologo=None))
+    psicologo= forms.CharField(label='Nombre del psicologo',required=True)
+    class Meta:
+        model = Grupo
+        fields = ['nombre','psicologo']
+    
+

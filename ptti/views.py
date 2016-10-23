@@ -202,8 +202,9 @@ def activar_administrador(request, user_id):
 @login_required(login_url='/login/')
 @permission_required('ptti.change_psicologo', login_url="/login/")
 def psicologos(request):
+    grupos_lista = Grupo.objects.order_by('psicologo')
     usuarios_lista = Psicologo.objects.order_by('-date_joined').exclude(id=request.user.id)
-    context = {'usuarios_lista': usuarios_lista}
+    context = {'usuarios_lista': usuarios_lista,'grupos_lista': grupos_lista}
     return render(request, 'usuarios.html', context)
 
 @login_required(login_url='/login/')
@@ -217,6 +218,37 @@ def crear_psicologo(request):
     else:
         formulario = FormCrearPsicologo()
     return render(request, 'usuario_crear.html', {'formulario':formulario})
+
+@login_required(login_url='/login')
+@permission_required('ptti.change_grupo', login_url="/login/")
+
+
+@login_required(login_url='/login')
+@permission_required('ptti.change_grupo', login_url="/login/")
+
+######################################################################### Arreglar
+def asignar_psicologo_grupo(request,user_id):
+    grupos_lista = Grupo.objects.only('id').filter(psicologo=user_id)
+    aux=list(grupos_lista)
+    grup=aux[0]
+    #gru = get_object_or_404(Grupo, nombre=grup)
+    #gru = get_object_or_404(Grupo, grup)
+
+
+    #user = Usuario.objects.filter(id =user_id )
+    user = get_object_or_404(Usuario, pk=user_id)
+    #user = Usuario.objects.only('username').filter(id = user_id )
+    usuario=str(user)
+    if request.method == 'POST':
+        formulario = FormAsignarPsicologoGrupo(request.POST,initial={'psicologo': usuario}) 
+        if formulario.is_valid():
+            formulario.save()
+            return HttpResponseRedirect('/psicologos')
+    else:
+        formulario = FormAsignarPsicologoGrupo(initial={'psicologo': usuario})
+
+    return render(request, 'asignar_psicologo_grupo.html', {'formulario':formulario,'user':usuario, 'gr':grup})
+
 
 @login_required(login_url='/login')
 @permission_required('ptti.change_psicologo', login_url="/login/")
@@ -374,6 +406,20 @@ def crear_grupo(request):
 
 @login_required(login_url='/login')
 @permission_required('ptti.change_grupo', login_url="/login/")
+def asignar_grupo_psicologo(request, gru_id):
+    gru = get_object_or_404(Grupo, pk=gru_id)
+    if request.method == 'POST':
+        formulario = FormAsignarGrupoPsicologo(request.POST, instance=gru)
+        if formulario.is_valid():
+            #ins = formulario.save(commit=False)
+            formulario.save()
+            return HttpResponseRedirect('/grupos')
+    else:
+        formulario = FormAsignarGrupoPsicologo(instance=gru)
+    return render(request, 'asignar_grupo_psicologo.html', {'formulario':formulario})
+
+@login_required(login_url='/login')
+@permission_required('ptti.change_grupo', login_url="/login/")
 def editar_grupo(request, gru_id):
     gru = get_object_or_404(Grupo, pk=gru_id)
     if request.method == 'POST':
@@ -395,9 +441,171 @@ def desactivar_grupo(request, gru_id):
     return HttpResponseRedirect('/grupos')
 
 @login_required(login_url='/login/')
-@permission_required('ptti.change_grupo', login_url="/login/")
+@permission_required('ptti.change_psicologo', login_url="/login/")
 def activar_grupo(request, gru_id):
     gru = get_object_or_404(Grupo, pk=gru_id)
     gru.activar()
     gru.save()
     return HttpResponseRedirect('/grupos')
+
+#vistas de test
+
+@login_required(login_url='/login/')
+#@permission_required('ptti.change_test', login_url="/login/")
+def testTI(request):
+    test_lista = TestTI.objects.order_by('nombre')
+    context = {'test_lista': test_lista}
+    return render(request, 'test.html', context)
+
+@login_required(login_url='/login/')
+#@permission_required('ptti.add_test', login_url="/login/")
+def crear_test(request):
+    if request.method == 'POST':
+        formulario = FormTestTI(request.POST)
+        if formulario.is_valid():
+            te = formulario.save(commit=False)
+            te.save()
+            return HttpResponseRedirect('/test')
+    else:
+        formulario = FormTestTI()
+    return render(request, 'test_form.html', {'formulario':formulario})
+
+@login_required(login_url='/login')
+#@permission_required('ptti.change_test', login_url="/login/")
+def cambiar_nombre_test(request, test_id):
+    te = get_object_or_404(TestTI, pk=test_id)
+    if request.method == 'POST':
+        formulario = FormTestTI(request.POST, instance=te)
+        if formulario.is_valid():
+            #ins = formulario.save(commit=False)
+            formulario.save()
+            return HttpResponseRedirect('/test')
+    else:
+        formulario = FormTestTI(instance=te)
+    return render(request, 'test_form.html', {'formulario':formulario})
+
+
+@login_required(login_url='/login/')
+#@permission_required('ptti.change_test', login_url="/login/")
+def desactivar_test(request, test_id):
+    te = get_object_or_404(TestTI, pk=test_id)
+    te.desactivar()
+    te.save()
+    return HttpResponseRedirect('/test')
+
+@login_required(login_url='/login/')
+#@permission_required('ptti.change_test', login_url="/login/")
+def activar_test(request, test_id):
+    te = get_object_or_404(TestTI, pk=test_id)
+    te.activar()
+    te.save()
+    return HttpResponseRedirect('/test')
+
+
+#vistas de preguntas
+
+@login_required(login_url='/login/')
+#@permission_required('ptti.change_grupo', login_url="/login/")
+def preguntas_test(request, test_id):
+    pregunta_lista = PreguntaTestTI.objects.order_by('numero').filter(test=test_id)
+    context = {'pregunta_lista': pregunta_lista, 'test':test_id}
+    return render(request, 'pregunta.html', context)
+
+@login_required(login_url='/login/')
+#@permission_required('ptti.change_test', login_url="/login/")
+def crear_pregunta(request, test_id):
+    if request.method == 'POST':
+        formulario = FormPreguntaTestTI(request.POST)
+        if formulario.is_valid():
+            #ins = formulario.save(commit=False)
+            formulario.save()
+            return preguntas_test(request, test_id)
+    else:
+        formulario = FormPreguntaTestTI()
+    return render(request, 'pregunta_form.html', {'formulario':formulario})
+
+
+@login_required(login_url='/login')
+#@permission_required('ptti.change_test', login_url="/login/")
+def editar_pregunta(request, pre_id,test_id):
+    pre = get_object_or_404(PreguntaTestTI, pk=pre_id)
+    if request.method == 'POST':
+        formulario = FormPreguntaTestTI(request.POST, instance=pre)
+        if formulario.is_valid():
+            #ins = formulario.save(commit=False)
+            formulario.save()
+            return preguntas_test(request, test_id)
+    else:
+        formulario = FormPreguntaTestTI(instance=pre)
+    return render(request, 'pregunta_form.html', {'formulario':formulario})
+
+
+# vistas  de repuestas
+@login_required(login_url='/login')
+#@permission_required('ptti.change_test', login_url="/login/")
+def respuestas_pregunta(request, pre_id):
+    respuesta_lista = RespuestaTestTI.objects.order_by('respuesta').filter(pregunta=pre_id)
+    context = {'respuesta_lista': respuesta_lista, 'pregunta':pre_id}
+    return render(request, 'respuesta.html', context)
+
+
+@login_required(login_url='/login')
+#@permission_required('ptti.change_test', login_url="/login/")
+def crear_respuesta(request, pre_id):
+    if request.method == 'POST':
+        formulario = FormRespuestaTestTI(request.POST)
+        if formulario.is_valid():
+            #ins = formulario.save(commit=False)
+            formulario.save()
+            return respuestas_pregunta(request, pre_id)
+    else:
+        formulario = FormRespuestaTestTI()
+    return render(request, 'respuesta_form.html', {'formulario':formulario})
+
+
+@login_required(login_url='/login')
+#@permission_required('ptti.change_test', login_url="/login/")
+def editar_respuesta(request, res_id,pre_id):
+    res = get_object_or_404(RespuestaTestTI, pk=res_id)
+    if request.method == 'POST':
+        formulario = FormRespuestaTestTI(request.POST, instance=res)
+        if formulario.is_valid():
+            #ins = formulario.save(commit=False)
+            formulario.save()
+            return respuestas_pregunta(request, pre_id)
+    else:
+        formulario = FormRespuestaTestTI(instance=res)
+    return render(request, 'respuesta_form.html', {'formulario':formulario})
+
+
+#######################    vistas del psicologo           #######################
+    
+
+# vistas para asignacion de test
+
+@login_required(login_url='/login')
+#@permission_required('ptti.asignar', login_url="/login/")
+def TestAsignados(request):
+    asignados_lista = TestAsignado.objects.order_by('estudiante')
+    context = {'asignados_lista': asignados_lista}
+    return render(request, 'testAsignados.html', context)
+
+@login_required(login_url='/login')
+#@permission_required('ptti.change_test', login_url="/login/")
+def asignarTest(request):
+    if request.method == 'POST':
+        formulario = FormTestAsignado(request.POST)
+        if formulario.is_valid():
+            #ins = formulario.save(commit=False)
+            formulario.save()
+            return TestAsignados(request)
+    else:
+        formulario = FormTestAsignado()
+    return render(request, 'asignar_form.html', {'formulario':formulario})
+
+# vistas de diagnostico 
+
+@login_required(login_url='/login')
+#@permission_required('ptti.diagnosticar', login_url="/login/")
+def diagnosticar(request):
+    return render(request, 'diagnosticar.html')

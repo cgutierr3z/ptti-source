@@ -29,15 +29,23 @@
       </thead>
       <tbody>
 				{% for grupo in grupos_lista %}
-          <tr>
+          <tr style="text-align:center">
 						<td>{{ forloop.counter }}</td>
             <td><a href="{% url 'ptti:editar_grupo' grupo.id %}">{{ grupo.institucion }}</a></td>
 						<td>{{ grupo.jornada }}</td>
             <td>{{ grupo.grado }}</td>
 						<td>{{ grupo.nombre }}</td>
-						<td>{{ grupo.psicologo }}</td>
 						<td>
-							<a class="btn btn-sm btn-default" href="{% url 'ptti:editar_grupo' grupo.id %}">editar</a>
+
+						{% if grupo.psicologo %}
+							{{ grupo.psicologo }}	
+						{% else %}
+							<a class="btn btn-sm btn-success" href="{% url 'ptti:asignar_grupo_psicologo' grupo.id %}">Asignar psicologo</a>
+						{% endif %}
+
+						</td>
+						<td>
+							<a class="btn btn-sm btn-default" href="{% url 'ptti:editar_grupo' grupo.id %}">editr</a>
 							{% if grupo.is_active %}
 								<a class="btn btn-sm btn-danger" href="{% url 'ptti:desactivar_grupo' grupo.id %}">desactivar</a>
 							{% else %}

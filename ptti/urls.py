@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^psicologos/editar/(?P<user_id>[0-9]+)$',views.editar_psicologo, name='editar_psicologo'),
     url(r'^psicologos/activar/(?P<user_id>[0-9]+)$',views.activar_psicologo, name='activar_psicologo'),
     url(r'^psicologos/desactivar/(?P<user_id>[0-9]+)$',views.desactivar_psicologo, name='desactivar_psicologo'),
+    url(r'^psicologos/asignar_psicologo_grupo/(?P<user_id>[0-9]+)$',views.asignar_psicologo_grupo, name='asignar_psicologo_grupo'),
 
     url(r'^estudiantes/$',views.estudiantes, name='estudiantes'),
     url(r'^estudiantes/crear$',views.crear_estudiante, name='crear_estudiante'),
@@ -49,5 +50,28 @@ urlpatterns = [
     url(r'^grupos/editar/(?P<gru_id>[0-9]+)$',views.editar_grupo, name='editar_grupo'),
     url(r'^grupos/activar/(?P<gru_id>[0-9]+)$',views.activar_grupo, name='activar_grupo'),
     url(r'^grupos/desactivar/(?P<gru_id>[0-9]+)$',views.desactivar_grupo, name='desactivar_grupo'),
+    url(r'^grupos/asignar_grupo_psicologo/(?P<gru_id>[0-9]+)$',views.asignar_grupo_psicologo, name='asignar_grupo_psicologo'),
+
+    url(r'^test/$',views.testTI, name='test'),
+    url(r'^test/crear$',views.crear_test, name='crear_test'),
+    url(r'^test/cambiar_nombre/(?P<test_id>[0-9]+)$',views.cambiar_nombre_test, name='cambiar_nombre_test'),
+    url(r'^test/activar/(?P<test_id>[0-9]+)$',views.activar_test, name='activar_test'),
+    url(r'^test/desactivar/(?P<test_id>[0-9]+)$',views.desactivar_test, name='desactivar_test'),
+
+    url(r'^test/preguntas/(?P<test_id>[0-9]+)$',views.preguntas_test, name='preguntas_test'),
+    url(r'^test/preguntas/crear_pregunta/(?P<test_id>[0-9]+)$',views.crear_pregunta, name='crear_pregunta'),
+    url(r'^test/preguntas/editar_pregunta/(?P<pre_id>[0-9]+)/(?P<test_id>[0-9]+)/$',views.editar_pregunta, name='editar_pregunta'), 
+
+    url(r'^test/preguntas/respuesta/(?P<pre_id>[0-9]+)$',views.respuestas_pregunta, name='respuestas_pregunta'),
+    url(r'^test/preguntas/respuesta/crear_respuesta/(?P<pre_id>[0-9]+)$',views.crear_respuesta, name='crear_respuesta'),
+    url(r'^test/preguntas/respuesta/editar_respuesta/(?P<res_id>[0-9]+)/(?P<pre_id>[0-9]+)/$',views.editar_respuesta, name='editar_respuesta'),
+
+    #urls del psicologo
+
+    url(r'^asignados/$',views.TestAsignados, name='TestAsignados'),
+    url(r'^asignados/asignarTest/$',views.asignarTest, name='asignarTest'),
+
+
+    url(r'^diagnosticar/$',views.diagnosticar, name='diganosticar'),
 
 ]

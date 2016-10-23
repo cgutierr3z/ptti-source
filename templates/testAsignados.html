@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+	test asignados
+{% endblock %}
+
+{% block encabezado %}
+	<h1>test asignados</h1>
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block contenido %}
+	<a class="btn btn-primary" href="{% url 'ptti:asignarTest' %}">Asignar test</a>
+
+  {% if asignados_lista %}
+	<div class="table-responsive">
+		<table class="table table-striped">
+      <thead>
+        <tr style="font-weight:bold;text-align:center">
+		    <td>estudiante</td>          
+		    <td>test</td>
+		    <td>estado</td>
+
+
+         <td>opciones</td>
+        </tr>
+      </thead>
+      <tbody>
+				{% for asignado in asignados_lista %}
+          <tr style="text-align:center">
+				<td>{{ asignado.estudiante }}</td>
+				<td>{{ asignado.test }}</td>
+				<td>{{ asignado.estado }}</td>
+				<td>
+				{% if asignado.estado == "FINALIZADO" %}
+					<a class="btn btn-sm btn-success" href="">Diagnosticar</a>	
+				{% endif %}
+				{% if asignado.estado == "DIAGNOSTICADO" %}
+					<a class="btn btn-sm btn-primary" href="">Modificar diagnostco</a>	
+				{% endif %}
+
+				<td><a class="btn btn-sm btn-default" href="">Ver respuestas</a></td>	
+				
+          </tr>
+				{% endfor %}
+      </tbody>
+    </table>
+	</div>
+
+  {% else %}
+		<div class="alert alert-danger" role="alert">
+    	<p>No asignados</p>
+		</div>
+  {% endif %}
+{% endblock %}

@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block titulo %}
-	Ingresar grupo
+	Nuevo test
 {% endblock %}
 
 {% block encabezado %}
-	<h1>Ingresa los datos del grupo</h1>
+	<h1>Registra una Nuevo test</h1>
 {% endblock %}
 
 {% block menu %}
@@ -17,5 +17,6 @@
 		{% csrf_token %}
 		<table>{{formulario}}</table>
 		<p><input class="btn btn-primary" type='submit' value='Guardar'/></p>
+		
 	</form>
 {% endblock %}

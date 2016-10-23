@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+	tests
+{% endblock %}
+
+{% block encabezado %}
+	<h1>Lista de de test</h1>
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block contenido %}
+	<a class="btn btn-primary" href='crear'>Crear test</a>
+  {% if test_lista %}
+	<div class="table-responsive">
+		<table class="table table-striped">
+      <thead>
+        <tr style="font-weight:bold;text-align:center">
+					<td></td>
+          <td>nombre</td>
+          <td>opciones</td>
+        </tr>
+      </thead>
+      <tbody>
+				{% for test in test_lista %}
+          <tr style="text-align:center">
+				<td>{{ forloop.counter }}</td>
+				<td>{{ test.nombre }}</td>
+				<td><a class="btn btn-sm btn-default" href="{% url 'ptti:cambiar_nombre_test' test.id %}">cambiar nombre</a></td>
+				<td><a class="btn btn-sm btn-default" href="{% url 'ptti:preguntas_test' test.id %}">Ver preguntas</a></td>
+				<td>{% if test.is_active %}
+						<a class="btn btn-sm btn-danger" href="{% url 'ptti:desactivar_test' test.id %}">desactivar</a>
+					{% else %}
+						<a class="btn btn-sm btn-success" href="{% url 'ptti:activar_test' test.id %}">activar</a>
+					{% endif %}
+				</td>
+          </tr>
+				{% endfor %}
+      </tbody>
+    </table>
+	</div>
+
+  {% else %}
+		<div class="alert alert-danger" role="alert">
+    	<p>No tests</p>
+		</div>
+  {% endif %}
+{% endblock %}
