@@ -16,7 +16,7 @@
 {% block contenido %}
 	<form id='formulario' method='post' action=''>
 		{% csrf_token %}
-		<table>{{formulario}}
+		<table>{{formulario.as_ul}}
 
 		</table>
 

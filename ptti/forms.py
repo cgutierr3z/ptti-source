@@ -408,7 +408,7 @@ class FormAsignarGrupoPsicologo(forms.ModelForm):
 
 class FormAsignarPsicologoGrupo(forms.ModelForm):
     nombre = forms.ModelChoiceField(label='Nombre del grupo', queryset=Grupo.objects.all().filter(psicologo=None))
-    psicologo= forms.CharField(label='Nombre del psicologo',required=True)
+    psicologo= forms.ModelChoiceField(label='Nombre del psicologo', queryset=Psicologo.objects.filter(is_active=True))
     class Meta:
         model = Grupo
         fields = ['nombre','psicologo']

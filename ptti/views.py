@@ -230,7 +230,6 @@ def crear_psicologo(request):
 def asignar_psicologo_grupo(request,user_id):
     grupos_lista = Grupo.objects.only('id').filter(psicologo=user_id)
     aux=list(grupos_lista)
-    grup=aux[0]
     #gru = get_object_or_404(Grupo, nombre=grup)
     #gru = get_object_or_404(Grupo, grup)
 
@@ -239,15 +238,20 @@ def asignar_psicologo_grupo(request,user_id):
     user = get_object_or_404(Usuario, pk=user_id)
     #user = Usuario.objects.only('username').filter(id = user_id )
     usuario=str(user)
+    psi = Psicologo.objects.get(username=usuario)
     if request.method == 'POST':
-        formulario = FormAsignarPsicologoGrupo(request.POST,initial={'psicologo': usuario}) 
+        grupo_id = request.POST.get("nombre")
+        grupo = Grupo.objects.get(pk=grupo_id)
+        formulario = FormAsignarPsicologoGrupo(request.POST, instance=grupo) 
         if formulario.is_valid():
             formulario.save()
             return HttpResponseRedirect('/psicologos')
+        else:
+            print formulario.errors
     else:
-        formulario = FormAsignarPsicologoGrupo(initial={'psicologo': usuario})
+        formulario = FormAsignarPsicologoGrupo(initial={'psicologo': psi})
 
-    return render(request, 'asignar_psicologo_grupo.html', {'formulario':formulario,'user':usuario, 'gr':grup})
+    return render(request, 'asignar_psicologo_grupo.html', {'formulario':formulario,'user':usuario})
 
 
 @login_required(login_url='/login')
