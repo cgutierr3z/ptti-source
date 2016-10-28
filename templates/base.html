@@ -51,8 +51,8 @@
                 {% endif %}
 
                 {% if request.user.is_psicologo %}
-                  <li><a href='/asignados/'>asignar</a></li>
-                  <li><a href='/diagnosticar/'>diagnosticar</a></li>
+                  <li><a href='/asignados/{{user.id}}'>asignar</a></li>
+                  <li><a href='/diagnosticar/{{user.id}}'>diagnosticar</a></li>
                 {% endif %}
 
               </ul>

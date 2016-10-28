@@ -12,7 +12,9 @@
 {% endblock %}
 
 {% block contenido %}
-	<a class="btn btn-primary" href="{% url 'ptti:asignarTest' %}">Asignar test</a>
+	<a class="btn btn-primary" href="{% url 'ptti:asignarTestEstudiante' user_id %}">Asignar test a estudiante</a>
+	<a class="btn btn-primary" href="{% url 'ptti:asignarTestGrupo' user_id %}">Asignar test a grupo </a>
+
 
   {% if asignados_lista %}
 	<div class="table-responsive">
