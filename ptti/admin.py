@@ -40,3 +40,13 @@ admin.site.register(Administrador)
 admin.site.register(Psicologo)
 
 admin.site.register(Estudiante)
+
+admin.site.register(TestTI)
+
+admin.site.register(PreguntaTestTI)
+
+admin.site.register(RespuestaTestTI)
+
+admin.site.register(TestAsignado)
+
+

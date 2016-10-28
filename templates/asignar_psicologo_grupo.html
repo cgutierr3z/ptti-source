@@ -1,11 +1,12 @@
+
 {% extends 'base.html' %}
 
 {% block titulo %}
-	Ingresar grupo
+	Asignar grupo al psicologo
 {% endblock %}
 
 {% block encabezado %}
-	<h1>Ingresa los datos del grupo</h1>
+	<h1>Asigna un grupo al psicologo</h1>
 {% endblock %}
 
 {% block menu %}
@@ -15,7 +16,10 @@
 {% block contenido %}
 	<form id='formulario' method='post' action=''>
 		{% csrf_token %}
-		<table>{{formulario}}</table>
+		<table>{{formulario.as_ul}}
+
+		</table>
+
 		<p><input class="btn btn-primary" type='submit' value='Guardar'/></p>
-	</form>
-{% endblock %}
+	</form> 
+{% endblock %} 

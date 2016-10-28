@@ -15,11 +15,14 @@ def define_groups():
         Permission.objects.get(codename='add_institucion'),
         Permission.objects.get(codename='change_grupo'),
         Permission.objects.get(codename='add_grupo'),
+        Permission.objects.get(codename='change_testti'),
+        Permission.objects.get(codename='add_testti'),
     ]
     create_group('administrador', permissionsAdmin)
 
     permissionsPsico = [
-
+        Permission.objects.get(codename='asignar'),
+        Permission.objects.get(codename='diagnosticar'),
     ]
     create_group('psicologo', permissionsPsico)
 

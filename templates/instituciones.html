@@ -31,7 +31,7 @@
       </thead>
       <tbody>
 				{% for institucion in instituciones_lista %}
-          <tr>
+          <tr style="text-align:center">
 						<td>{{ forloop.counter }}</td>
             <td><a href="{% url 'ptti:editar_institucion' institucion.id %}">{{ institucion.nit }}</a></td>
 						<td>{{ institucion.nombre }}</td>

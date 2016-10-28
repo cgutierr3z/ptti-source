@@ -47,6 +47,12 @@
                   <li><a href='/estudiantes/'>Estudiantes</a></li>
                   <li><a href='/instituciones/'>Instituciones</a></li>
                   <li><a href='/grupos/'>Grupos</a></li>
+                  <li><a href='/test/'>Evaluaciones</a></li>
+                {% endif %}
+
+                {% if request.user.is_psicologo %}
+                  <li><a href='/asignados/{{user.id}}'>asignar</a></li>
+                  <li><a href='/diagnosticar/{{user.id}}'>diagnosticar</a></li>
                 {% endif %}
 
               </ul>

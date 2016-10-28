@@ -121,13 +121,12 @@ class Grupo(models.Model):
     jornada     = models.CharField(max_length=200,choices=JORNADA_LIST)
     grado       = models.CharField(max_length=200,choices=GRADOS_LIST)
     nombre      = models.CharField(max_length=200)
-    psicologo   = models.ForeignKey(Psicologo, on_delete=models.CASCADE)
+    psicologo   = models.ForeignKey(Psicologo, on_delete=models.PROTECT, null=True, blank=True)
     is_active   = models.BooleanField('Activar',default=True)
 
 
     def __str__(self):
-        return self.nombre + "-" + self.institucion.nombre
-
+        return self.nombre 
     def desactivar(self):
         self.is_active = False
 
@@ -147,9 +146,17 @@ class Estudiante(Usuario):
 #modelo de Test
 class TestTI(models.Model):
     nombre      = models.CharField(max_length=200)
+    is_active   = models.BooleanField('Activar',default=True)
 
     def __str__(self):
         return self.nombre
+    
+    def desactivar(self):
+        self.is_active = False
+
+    def activar(self):
+        self.is_active = True
+
 
     class Meta:
         verbose_name = "Test TI"
@@ -158,7 +165,7 @@ class TestTI(models.Model):
 class PreguntaTestTI(models.Model):
     test        = models.ForeignKey(TestTI, on_delete=models.CASCADE)
     pregunta    = models.CharField(max_length=200)
-    numero      = models.IntegerField(unique=True)
+    numero      = models.CharField(max_length=200,unique=True)
 
     def __str__(self):
         return self.numero + " " +  self.pregunta
@@ -180,11 +187,19 @@ class RespuestaTestTI(models.Model):
 
 #modelo de respuestas a los test
 class TestAsignado(models.Model):
+    ESTADOS_LIST = [
+        ('SIN INICIAR', 'SIN INICIAR'),
+        ('INICIADO', 'INICIADO'),
+        ('FINALIZADO', 'FINALIZADO'),
+        ('DIAGNOSTICADO', 'DIAGNOSTICADO'),
+    ]
     estudiante  = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     test        = models.ForeignKey(TestTI, on_delete=models.CASCADE)
+    estado      = models.CharField(max_length=200,choices=ESTADOS_LIST)
 
     def __str__(self):
-        return self.test + " " + self.estudiante
+        concat=str(self.test) + ":" + str(self.estudiante)
+        return concat
 
     class Meta:
         verbose_name = "Test Asignado"
@@ -196,7 +211,7 @@ class RespuestaEstudiante(models.Model):
     respuesta   = models.ForeignKey(RespuestaTestTI, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.test + " " + self.estudiante
+        return self.test + ":" + self.estudiante
 
     class Meta:
         verbose_name = "Test Asignado"
