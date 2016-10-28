@@ -69,14 +69,14 @@ urlpatterns = [
     #urls del psicologo
 
     url(r'^asignados/(?P<user_id>[0-9]+)/$',views.TestAsignados, name='TestAsignados'),
-    url(r'^asignados/asignarTestEstudiante/(?P<user_id>[0-9]+)/$',views.asignarTestEstudiante, name='asignarTestEstudiante'),
-    url(r'^asignados/asignarTestGrupo/(?P<user_id>[0-9]+)/$',views.asignarTestGrupo, name='asignarTestGrupo'),
+    #url(r'^asignados/asignarTestEstudiante/(?P<user_id>[0-9]+)/$',views.asignarTestEstudiante, name='asignarTestEstudiante'),
+    #url(r'^asignados/asignarTestGrupo/(?P<user_id>[0-9]+)/$',views.asignarTestGrupo, name='asignarTestGrupo'),
 
 
-    url(r'^diagnosticar/$',views.diagnosticar, name='diganosticar'),
+    #url(r'^diagnosticar/$',views.diagnosticar, name='diganosticar'),
 
 
 
     #urls del estudiante
-    url(r'^/$',views.TestAsignados, name='TestAsignados'),
+    #url(r'^/$',views.TestAsignados, name='TestAsignados'),
 ]
