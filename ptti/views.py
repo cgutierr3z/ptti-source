@@ -582,18 +582,32 @@ def editar_respuesta(request, res_id,pre_id):
 @login_required(login_url='/login')
 #@permission_required('ptti.asignar', login_url="/login/")
 def TestAsignados(request, user_id):
-    asignados_lista = TestAsignado.objects.order_by('estudiante')
-    context = {'asignados_lista': asignados_lista, 'user_id':user_id}
-    return render(request, 'testAsignados.html', context)
+    lista_grupos = Grupo.objects.filter(psicologo=request.user)
+    lista_estudiantes = []
+    lista_test = []
 
+    for grupo in lista_grupos:
+        gru = Estudiante.objects.filter(grupo=grupo)
+        if len(gru) != 0:
+            lista_estudiantes.append(gru)
+
+    for estudiante in lista_estudiantes:
+        lista_test.append(TestAsignado.objects.filter(estudiante=estudiante))
+
+    asignados_lista = TestAsignado.objects.order_by('estudiante')
+    context = {'asignados_lista': lista_test}
+    return render(request, 'testAsignados.html', context)
+"""
 @login_required(login_url='/login')
 #@permission_required('ptti.change_grupo', login_url="/login/")
 def asignarTestEstudiante(request,user_id):
-    grupos_lista = Grupo.objects.only('id').filter(psicologo=user_id)
-    aux=list(grupos_lista)
-    user = get_object_or_404(Usuario, pk=user_id)
-    usuario=str(user)
-    psi = Psicologo.objects.get(username=usuario)
+    estudiantes=[]
+    tests=[]
+    grupos_lista = Grupo.objects.filter(psicologo=user_id)
+    for grupo in grupos_lista:
+        estudiantes.append() = estudiante.objects.filter(grupo=grupos)
+    for estu in estudiantes:
+        tests.append()=TestAsignado.objects.filter(estudiante=estu)
     if request.method == 'POST':
         grupo_id = request.POST.get("nombre")
         grupo = Grupo.objects.get(pk=grupo_id)
@@ -623,3 +637,4 @@ def asignarTestGrupo(request,user_id):
 #@permission_required('ptti.diagnosticar', login_url="/login/")
 def diagnosticar(request):
     return render(request, 'diagnosticar.html')
+"""
