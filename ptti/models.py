@@ -126,7 +126,7 @@ class Grupo(models.Model):
 
 
     def __str__(self):
-        return self.nombre 
+        return self.nombre
     def desactivar(self):
         self.is_active = False
 
@@ -150,7 +150,7 @@ class TestTI(models.Model):
 
     def __str__(self):
         return self.nombre
-    
+
     def desactivar(self):
         self.is_active = False
 
@@ -195,7 +195,7 @@ class TestAsignado(models.Model):
     ]
     estudiante  = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     test        = models.ForeignKey(TestTI, on_delete=models.CASCADE)
-    estado      = models.CharField(max_length=200,choices=ESTADOS_LIST)
+    estado      = models.CharField(max_length=20,choices=ESTADOS_LIST)
 
     def __str__(self):
         concat=str(self.test) + ":" + str(self.estudiante)
@@ -206,7 +206,7 @@ class TestAsignado(models.Model):
         verbose_name_plural = "Tests Asignados"
 
 class RespuestaEstudiante(models.Model):
-    test        = models.ForeignKey(TestAsignado, on_delete=models.CASCADE)
+    testAsignado= models.ForeignKey(TestAsignado, on_delete=models.CASCADE)
     pregunta    = models.ForeignKey(PreguntaTestTI, on_delete=models.CASCADE)
     respuesta   = models.ForeignKey(RespuestaTestTI, on_delete=models.CASCADE)
 

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+	test asignados
+{% endblock %}
+
+{% block encabezado %}
+	<h1>Mis Test Asignados</h1>
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block contenido %}
+
+  {% if asignados_lista %}
+	<div class="table-responsive">
+		<table class="table table-striped">
+      <thead>
+        <tr style="font-weight:bold;text-align:center">
+				<td></td>
+		    <td>Test</td>
+		    <td>Estado</td>
+				<td> </td>
+        </tr>
+      </thead>
+      <tbody>
+
+		{% for asignado in asignados_lista %}
+
+      <tr style="text-align:center">
+				<td>{{ forloop.counter }}</td>
+				<td>{{ asignado.test }}</td>
+				<td>{{ asignado.estado }}</td>
+
+				<td><a class="btn btn-sm btn-default" href="">Responder</a></td>
+			 </tr>
+
+	{% endfor %}
+      </tbody>
+    </table>
+	</div>
+
+  {% else %}
+		<div class="alert alert-danger" role="alert">
+    	<p>No asignados</p>
+		</div>
+  {% endif %}
+{% endblock %}

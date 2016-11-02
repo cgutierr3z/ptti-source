@@ -5,12 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PTTI - {% block titulo %}{% endblock %}</title>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
 
-      {% block style_css %}{% endblock %}
+    {% load static %}
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="{% static "ptti/css/bootstrap.min.css" %}" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="{% static "ptti/css/bootstrap-theme.min.css" %}" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    {% block style_css %}{% endblock %}
   </head>
 
   <body>
@@ -51,8 +56,13 @@
                 {% endif %}
 
                 {% if request.user.is_psicologo %}
-                  <li><a href='/asignados/{{user.id}}'>asignar</a></li>
-                  <li><a href='/diagnosticar/{{user.id}}'>diagnosticar</a></li>
+                  <li><a href='/asignados/'>Asignar</a></li>
+                  <li><a href='/diagnosticar/'>Diagnosticar</a></li>
+                {% endif %}
+
+                {% if request.user.is_estudiante %}
+                  <li><a href='/mis-test/'>Mis Test</a></li>
+
                 {% endif %}
 
               </ul>
@@ -66,22 +76,25 @@
         </div>
     	</nav>
 
-
-
     <div class="container col-12" style="margin-top:50px">
       {% block encabezado %}{% endblock %}
     	<hr />
   	  {% block contenido %}{% endblock %}
-      <footer class="footer" style="padding-top: 40px;padding-bottom: 40px;margin-top: 40px;border-top: 1px solid #eee;">
-    	   <p>© 2016. Proyecto PTTI. Yenifer Rivas - Esteban Idarraga - Cristian Vazquez - Carlos Gutierrez</p>
+      <footer class="footer" style="padding-top: 40px;padding-bottom: 40px;margin-top: 40px;border-top: 2px solid #eee;">
+    	   <p style="text-align:center">© 2016. Proyecto PTTI. Yenifer Rivas - Esteban Idarraga - Cristian Vazquez - Carlos Gutierrez</p>
       </footer>
     </div>
 
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+    <!-- Latest compiled and minified JavaScript -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
 
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{% static "ptti/js/jquery.min.js" %}"></script>
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="{% static "ptti/js/bootstrap.min.js" %}" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
 
   </body>
 </html>

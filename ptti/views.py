@@ -234,7 +234,7 @@ def asignar_psicologo_grupo(request,user_id):
     if request.method == 'POST':
         grupo_id = request.POST.get("nombre")
         grupo = Grupo.objects.get(pk=grupo_id)
-        formulario = FormAsignarPsicologoGrupo(request.POST, instance=grupo) 
+        formulario = FormAsignarPsicologoGrupo(request.POST, instance=grupo)
         if formulario.is_valid():
             formulario.save()
             return HttpResponseRedirect('/psicologos')
@@ -575,13 +575,13 @@ def editar_respuesta(request, res_id,pre_id):
 
 
 #######################    vistas del psicologo           #######################
-    
+
 
 # vistas para asignacion de test
 
 @login_required(login_url='/login')
 #@permission_required('ptti.asignar', login_url="/login/")
-def TestAsignados(request, user_id):
+def TestAsignados(request):
     lista_grupos = Grupo.objects.filter(psicologo=request.user)
     lista_estudiantes = []
     lista_test = []
@@ -611,7 +611,7 @@ def asignarTestEstudiante(request,user_id):
     if request.method == 'POST':
         grupo_id = request.POST.get("nombre")
         grupo = Grupo.objects.get(pk=grupo_id)
-        formulario = FormAsignartestGrupo(request.POST, instance=grupo) 
+        formulario = FormAsignartestGrupo(request.POST, instance=grupo)
         if formulario.is_valid():
             formulario.save()
             return HttpResponseRedirect('/asignados')
@@ -631,10 +631,22 @@ def asignarTestGrupo(request,user_id):
 
 
 
-# vistas de diagnostico 
+# vistas de diagnostico
 
 @login_required(login_url='/login')
 #@permission_required('ptti.diagnosticar', login_url="/login/")
 def diagnosticar(request):
     return render(request, 'diagnosticar.html')
 """
+
+# vistas para estudiantes
+
+@login_required(login_url='/login')
+#@permission_required('ptti.asignar', login_url="/login/")
+def TestEstudiante(request):
+    estudiante = Estudiante.objects.filter(pk=request.user.id)
+
+    lista_test = TestAsignado.objects.filter(estudiante=estudiante)
+
+    context = {'asignados_lista': lista_test}
+    return render(request, 'mis-test.html', context)

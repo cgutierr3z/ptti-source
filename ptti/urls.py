@@ -7,8 +7,8 @@ urlpatterns = [
     url(r'^$', views.login, name='index'),
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout, name='logout'),
-    url(r'^password-reset/$', views.reset_password, name='reset_password'),
-    url(r'^password-reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',views.reset_password_confirm, name='reset_password_confirm'),
+    url(r'^password/$', views.reset_password, name='reset_password'),
+    url(r'^password/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',views.reset_password_confirm, name='reset_password_confirm'),
 
     url(r'^perfil/$', views.perfil, name='perfil'),
     url(r'^perfil/editar/(?P<user_id>[0-9]+)$',views.perfil_editar, name='perfil_editar'),
@@ -60,7 +60,7 @@ urlpatterns = [
 
     url(r'^test/preguntas/(?P<test_id>[0-9]+)$',views.preguntas_test, name='preguntas_test'),
     url(r'^test/preguntas/crear_pregunta/(?P<test_id>[0-9]+)$',views.crear_pregunta, name='crear_pregunta'),
-    url(r'^test/preguntas/editar_pregunta/(?P<pre_id>[0-9]+)/(?P<test_id>[0-9]+)/$',views.editar_pregunta, name='editar_pregunta'), 
+    url(r'^test/preguntas/editar_pregunta/(?P<pre_id>[0-9]+)/(?P<test_id>[0-9]+)/$',views.editar_pregunta, name='editar_pregunta'),
 
     url(r'^test/preguntas/respuesta/(?P<pre_id>[0-9]+)$',views.respuestas_pregunta, name='respuestas_pregunta'),
     url(r'^test/preguntas/respuesta/crear_respuesta/(?P<pre_id>[0-9]+)$',views.crear_respuesta, name='crear_respuesta'),
@@ -68,7 +68,7 @@ urlpatterns = [
 
     #urls del psicologo
 
-    url(r'^asignados/(?P<user_id>[0-9]+)/$',views.TestAsignados, name='TestAsignados'),
+    url(r'^asignados/$',views.TestAsignados, name='TestAsignados'),
     #url(r'^asignados/asignarTestEstudiante/(?P<user_id>[0-9]+)/$',views.asignarTestEstudiante, name='asignarTestEstudiante'),
     #url(r'^asignados/asignarTestGrupo/(?P<user_id>[0-9]+)/$',views.asignarTestGrupo, name='asignarTestGrupo'),
 
@@ -79,4 +79,8 @@ urlpatterns = [
 
     #urls del estudiante
     #url(r'^/$',views.TestAsignados, name='TestAsignados'),
+
+    #ulrs estudiante
+    url(r'^mis-test/$',views.TestEstudiante, name='TestEstudiante'),
+
 ]
