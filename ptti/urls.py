@@ -68,8 +68,11 @@ urlpatterns = [
 
     #urls del psicologo
 
-    url(r'^asignados/(?P<user_id>[0-9]+)/$',views.TestAsignados, name='TestAsignados'),
-    #url(r'^asignados/asignarTestEstudiante/(?P<user_id>[0-9]+)/$',views.asignarTestEstudiante, name='asignarTestEstudiante'),
+    url(r'^asignados/$',views.TestAsignados, name='TestAsignados'),
+    url(r'^asignados/asignarTestEstudiante/$',views.asignarTestEstudiante, name='asignarTestEstudiante'),
+    url(r'^asignados/asignarTestGrupo/$',views.asignarTestGrupo, name='asignarTestGrupo'),
+    url(r'^asignados/asignarTestGrupo/listaEstudiantes/(?P<gru_id>[0-9]+)$',views.listaEstudiantes, name='listaEstudiantes'),
+
     #url(r'^asignados/asignarTestGrupo/(?P<user_id>[0-9]+)/$',views.asignarTestGrupo, name='asignarTestGrupo'),
 
 

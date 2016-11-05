@@ -195,10 +195,10 @@ class TestAsignado(models.Model):
     ]
     estudiante  = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     test        = models.ForeignKey(TestTI, on_delete=models.CASCADE)
-    estado      = models.CharField(max_length=200,choices=ESTADOS_LIST)
+    estado      = models.CharField(max_length=200,choices=ESTADOS_LIST, default='SIN INICIAR')
 
     def __str__(self):
-        concat=str(self.test) + ":" + str(self.estudiante)
+        concat=str(self.test) + " " + str(self.estudiante)
         return concat
 
     class Meta:

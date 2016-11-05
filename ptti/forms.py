@@ -408,9 +408,48 @@ class FormAsignarGrupoPsicologo(forms.ModelForm):
 
 class FormAsignarPsicologoGrupo(forms.ModelForm):
     nombre = forms.ModelChoiceField(label='Nombre del grupo', queryset=Grupo.objects.all().filter(psicologo=None))
-    psicologo= forms.ModelChoiceField(label='Nombre del psicologo', queryset=Psicologo.objects.filter(is_active=True))
+    psicologo = forms.ModelChoiceField(label='Nombre del psicologo', queryset=Psicologo.objects.filter(is_active=True))
     class Meta:
         model = Grupo
         fields = ['nombre','psicologo']
+
+class FormAsignartestEstudiante(forms.ModelForm):
+
+    test  = forms.ModelChoiceField(label='Test', queryset=TestTI.objects.all())
+    estudiante  = forms.ModelChoiceField(label='Estudiante',queryset='')
+
+    class Meta:
+        model = TestAsignado
+        fields = ['test','estudiante', 'estado']
     
+    def __init__(self, *args, **kwargs):
+        psicolo = kwargs.pop('psicol')
+        super(FormAsignartestEstudiante, self).__init__(*args, **kwargs)
+        
+        if psicolo:
+            self.fields['estudiante'].queryset = Estudiante.objects.filter(grupo__psicologo=psicolo)
+            self.fields['test'].queryset = TestTI.objects.all()
+
+class FormAsignartestEstudianteGrupo(forms.ModelForm):
+
+    test  = forms.ModelChoiceField(label='Test', queryset=TestTI.objects.all())
+    estudiante  = forms.ModelChoiceField(label='Estudiante',queryset='')
+
+    class Meta:
+        model = TestAsignado
+        fields = ['test','estudiante', 'estado']
+    
+    def __init__(self, *args, **kwargs):
+        grupo = kwargs.pop('grupo')
+        super(FormAsignartestEstudianteGrupo, self).__init__(*args, **kwargs)
+        
+        if grupo:
+            self.fields['estudiante'].queryset = Estudiante.objects.filter(grupo=grupo)
+            self.fields['test'].queryset = TestTI.objects.all()
+
+
+
+
+
+
 

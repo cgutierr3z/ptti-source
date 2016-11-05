@@ -581,50 +581,51 @@ def editar_respuesta(request, res_id,pre_id):
 
 @login_required(login_url='/login')
 #@permission_required('ptti.asignar', login_url="/login/")
-def TestAsignados(request, user_id):
-    lista_grupos = Grupo.objects.filter(psicologo=request.user)
-    lista_estudiantes = []
-    lista_test = []
-
-    for grupo in lista_grupos:
-        gru = Estudiante.objects.filter(grupo=grupo)
-        if len(gru) != 0:
-            lista_estudiantes.append(gru)
-
-    for estudiante in lista_estudiantes:
-        lista_test.append(TestAsignado.objects.filter(estudiante=estudiante))
-
-    asignados_lista = TestAsignado.objects.order_by('estudiante')
-    context = {'asignados_lista': lista_test}
+def TestAsignados(request):
+    listaa=TestAsignado.objects.filter(estudiante__grupo__psicologo=request.user)
+    context = {'asignados_lista': listaa}
     return render(request, 'testAsignados.html', context)
-"""
+
+
 @login_required(login_url='/login')
 #@permission_required('ptti.change_grupo', login_url="/login/")
-def asignarTestEstudiante(request,user_id):
-    estudiantes=[]
-    tests=[]
-    grupos_lista = Grupo.objects.filter(psicologo=user_id)
-    for grupo in grupos_lista:
-        estudiantes.append() = estudiante.objects.filter(grupo=grupos)
-    for estu in estudiantes:
-        tests.append()=TestAsignado.objects.filter(estudiante=estu)
+def asignarTestEstudiante(request):
     if request.method == 'POST':
-        grupo_id = request.POST.get("nombre")
-        grupo = Grupo.objects.get(pk=grupo_id)
-        formulario = FormAsignartestGrupo(request.POST, instance=grupo) 
+        formulario = FormAsignartestEstudiante(request.POST,psicol=request.user) 
         if formulario.is_valid():
-            formulario.save()
+            gru = formulario.save(commit=False)
+            gru.save()
             return HttpResponseRedirect('/asignados')
-        else:
-            print formulario.errors
     else:
-        formulario = FormAsignarPsicologoGrupo(initial={'psicologo': psi})
-
+        formulario = FormAsignartestEstudiante(psicol=request.user)
     return render(request, 'asignar_test_estudiante.html', {'formulario':formulario})
 
 @login_required(login_url='/login')
+def asignarTestGrupo(request):
+    grupos_lista = Grupo.objects.filter(psicologo=request.user)
+    context = {'grupos_lista': grupos_lista}
+    return render(request, 'asignar_test_grupo.html', context)
+
+
+@login_required(login_url='/login')
+def listaEstudiantes(request, gru_id):
+    if request.method == 'POST':
+        formulario = FormAsignartestEstudianteGrupo(request.POST,grupo=gru_id) 
+        if formulario.is_valid():
+            gru = formulario.save(commit=False)
+            gru.save()
+            return HttpResponseRedirect('/asignados/asignarTestGrupo')
+    else:
+        formulario = FormAsignartestEstudianteGrupo(grupo=gru_id)
+    return render(request, 'asignar_test_estudiante.html', {'formulario':formulario})
+
+
+
+"""
+@login_required(login_url='/login')
 #@permission_required('ptti.change_grupo', login_url="/login/")
-def asignarTestGrupo(request,user_id):
+def asigna
+rTestGrupo(request,user_id):
     asignados_lista = Grupo.objects.filter(psicologo=user_id)
     context = {'asignados_lista': asignados_lista, 'user':user_id}
     return render(request, 'testAsignados.html', context)

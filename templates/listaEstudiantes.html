@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block encabezado %}
-	<h1>Tu lista de grupos</h1>
+	<h1>estudiantes que pertenecen al grupo {{grupo}}</h1>
 {% endblock %}
 
 {% block menu %}
@@ -17,13 +17,13 @@
 	<table class="table table-striped">
 		<thead>
 		    <tr style="font-weight:bold;text-align:center">
-				<td>Grupos</td>
+				<td>Estudiante</td>
 		    </tr>
 		  </thead>
 	    <tbody>
 	        <tr style="text-align:center">
 	        	<td>
-					{% for grupo in grupos_lista %}
+					{% for estudiante in estudiantes_lista %}
 						<a class="btn btn-sm btn-success" href="listaEstudiantes/{{grupo.id}}">{{grupo.nombre}}</a>	
 					{% endfor %}
 						

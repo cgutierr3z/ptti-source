@@ -13,8 +13,8 @@
 
 {% block contenido %}
 
-
-
+<a class="btn btn-primary" href="{% url 'ptti:asignarTestEstudiante' %}">asignar test a un estudiante</a>
+<a class="btn btn-primary" href="{% url 'ptti:asignarTestGrupo' %}">asignar test por grupo</a>
   {% if asignados_lista %}
 	<div class="table-responsive">
 		<table class="table table-striped">
@@ -30,9 +30,9 @@
       </thead>
       <tbody>
 
-		{% for asignados in asignados_lista %}
+		{% for asignado in asignados_lista %}
           
-          	{% for asignado in asignados %}
+
           	<tr style="text-align:center">
 				<td>{{ asignado.estudiante }}</td>
 				<td>{{ asignado.test }}</td>
@@ -46,11 +46,8 @@
 				{% endif %}
 				<td><a class="btn btn-sm btn-default" href="">Ver respuestas</a></td>
 				         </tr>
-			{% endfor %}
-					
 			
-				
- 
+
 	{% endfor %}
       </tbody>
     </table>
