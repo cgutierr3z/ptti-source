@@ -658,8 +658,8 @@ def TestEstudiante(request):
 @login_required(login_url='/login')
 def IniciarTest(request,id_test_asi):
     test_asi    = get_object_or_404(TestAsignado, pk=id_test_asi)
-    test = get_object_or_404(TestTI, pk=test_asi.id)
-    return render(request, 'responder_test.html', {'test': test})
+    test        = get_object_or_404(TestTI, pk=test_asi.id)
+    return render(request, 'responder_test.html', {'test': test_asi})
 
 @login_required(login_url='/login')
 def ResponderTest(request,id_test_asi,no_preg):
@@ -684,7 +684,7 @@ def ResponderTest(request,id_test_asi,no_preg):
         else:
             siguiente = int(no_preg) + 1
 
-            obj = RespuestaEstudiante.objects.get(
+            obj, created = RespuestaEstudiante.objects.get_or_create(
                 testAsignado = test_asi,
                 pregunta = pregunta,
             )

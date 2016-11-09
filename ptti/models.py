@@ -212,7 +212,7 @@ class TestAsignado(models.Model):
 class RespuestaEstudiante(models.Model):
     testAsignado= models.ForeignKey(TestAsignado, on_delete=models.CASCADE)
     pregunta    = models.ForeignKey(PreguntaTestTI, on_delete=models.CASCADE)
-    respuesta   = models.ForeignKey(RespuestaTestTI, on_delete=models.CASCADE)
+    respuesta   = models.ForeignKey(RespuestaTestTI, on_delete=models.CASCADE,null=True)
 
     def __str__(self):
         return str(self.testAsignado) + " : " + str(self.pregunta) + " : " + str(self.respuesta)
