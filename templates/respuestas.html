@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+	Respuestas Test
+{% endblock %}
+
+{% block encabezado %}
+	<h1>Respuestas a {{ test }}</h1>
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block contenido %}
+
+  {% if res %}
+	<div class="table-responsive">
+		<table class="table table-striped">
+      <thead>
+        <tr style="font-weight:bold;text-align:center">
+				<td></td>
+		    <td>Pregunta</td>
+		    <td>Respuesta</td>
+        </tr>
+      </thead>
+      <tbody>
+
+		{% for rs in res %}
+
+      <tr style="text-align:center">
+				<td>{{ rs.pregunta.numero }}</td>
+				<td>{{ rs.pregunta.pregunta }}</td>
+				<td>{{ rs.respuesta.respuesta }}</td>
+			 </tr>
+
+	{% endfor %}
+      </tbody>
+    </table>
+	</div>
+
+  {% else %}
+		<div class="alert alert-danger" role="alert">
+    	<p>No asignados</p>
+		</div>
+  {% endif %}
+{% endblock %}

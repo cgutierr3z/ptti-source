@@ -725,7 +725,14 @@ def ResponderTest(request,id_test_asi,no_preg):
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 """
 
-
 @login_required(login_url='/login')
 def TerminarTest(request,id_test_asi):
+    pass
+
+@login_required(login_url='/login')
+def RespuestasTest(request,id_test_asi):
+    test_asi    = get_object_or_404(TestAsignado, pk=id_test_asi)
+    rs_test     = RespuestaEstudiante.objects.filter(testAsignado=test_asi)
+    context = {'res': rs_test, 'test':test_asi.test}
+    return render(request, 'respuestas.html', context)
     pass

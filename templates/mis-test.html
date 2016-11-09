@@ -21,7 +21,7 @@
 				<td></td>
 		    <td>Test</td>
 		    <td>Estado</td>
-				<td> </td>
+				<td>Opciones</td>
         </tr>
       </thead>
       <tbody>
@@ -32,8 +32,17 @@
 				<td>{{ forloop.counter }}</td>
 				<td>{{ asignado.test }}</td>
 				<td>{{ asignado.estado }}</td>
-
-				<td><a class="btn btn-sm btn-default" href="{% url 'ptti:IniciarTest' asignado.id %}">Responder</a></td>
+				<td>
+					{% if asignado.estado == "SIN INICIAR" %}
+						<a class="btn btn-sm btn-default" href="{% url 'ptti:IniciarTest' asignado.id %}">Responder</a>
+					{% endif %}
+					{% if asignado.estado == "INICIADO"  %}
+						<a class="btn btn-sm btn-default" href="{% url 'ptti:ResponderTest' asignado.id asignado.pre_actual  %}">Continuar</a>
+					{% endif %}
+					{% if asignado.estado == "FINALIZADO" %}
+						<a class="btn btn-sm btn-default" href="{% url 'ptti:RespuestasTest' asignado.id %}">Ver respuestas</a>
+					{% endif %}
+				</td>
 			 </tr>
 
 	{% endfor %}

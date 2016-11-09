@@ -89,4 +89,5 @@ urlpatterns = [
     url(r'^mis-test/(?P<id_test_asi>[0-9]+)$',views.IniciarTest, name='IniciarTest'),
     url(r'^mis-test/(?P<id_test_asi>[0-9]+)/responder/(?P<no_preg>[0-9]+)$',views.ResponderTest, name='ResponderTest'),
     url(r'^mis-test/(?P<id_test_asi>[0-9]+)/terminar$',views.TerminarTest, name='TerminarTest'),
+    url(r'^mis-test/respuestas/(?P<id_test_asi>[0-9]+)$',views.RespuestasTest, name='RespuestasTest'),
 ]
