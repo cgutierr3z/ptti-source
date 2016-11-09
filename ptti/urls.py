@@ -82,5 +82,6 @@ urlpatterns = [
 
     #ulrs estudiante
     url(r'^mis-test/$',views.TestEstudiante, name='TestEstudiante'),
-
+    url(r'^mis-test/(?P<id_test_asi>[0-9]+)$',views.IniciarTest, name='IniciarTest'),
+    url(r'^mis-test/(?P<id_test_asi>[0-9]+)/responder/(?P<id_preg>[0-9]+)$',views.ResponderTest, name='ResponderTest'),
 ]

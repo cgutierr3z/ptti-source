@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+	Responder test: {{test.nombre}}
+{% endblock %}
+
+{% block encabezado %}
+
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block contenido %}
+	<center>
+		<h1>Responder test: {{test.nombre}}</h1>
+		
+
+		{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+		<form action="" method="post">
+		{% csrf_token %}
+		{% for rs in respuestas %}
+		    <input type="radio" name="rs" id="rs{{ forloop.counter }}" value="{{ rs.id }}" />
+		    <label for="rs{{ forloop.counter }}">{{ rs.respuesta }}</label><br />
+		{% endfor %}
+		<a class="btn btn-sm btn-default" href="{% url 'ptti:TestEstudiante' %}">Volver</a>
+		<input class="btn btn-sm btn-primary" type="submit" value="Siguiente" />
+		</form>
+	</center>
+{% endblock %}

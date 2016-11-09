@@ -33,7 +33,7 @@
 				<td>{{ asignado.test }}</td>
 				<td>{{ asignado.estado }}</td>
 
-				<td><a class="btn btn-sm btn-default" href="">Responder</a></td>
+				<td><a class="btn btn-sm btn-default" href="{% url 'ptti:IniciarTest' asignado.id %}">Responder</a></td>
 			 </tr>
 
 	{% endfor %}

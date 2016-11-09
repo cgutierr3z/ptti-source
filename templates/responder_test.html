@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+	Responder test: {{test.nombre}}
+{% endblock %}
+
+{% block encabezado %}
+
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block contenido %}
+
+	<center>
+		<h1>Responder test: {{test.nombre}}</h1>
+		<p> Estas a punto de iniciar el test de {{test.nombre}}</p>
+		<a class="btn btn-sm btn-default" href="{% url 'ptti:TestEstudiante' %}">Volver</a>
+		<a class="btn btn-sm btn-primary" href="{% url 'ptti:ResponderTest' test.id 1 %}">Iniciar</a>
+	</center>
+{% endblock %}

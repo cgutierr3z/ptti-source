@@ -67,7 +67,6 @@ class Usuario(AbstractUser):
     def activar(self):
         self.is_active = True
 
-
 class Administrador(Usuario):
     class Meta:
         verbose_name = "Administrador"
@@ -132,7 +131,6 @@ class Grupo(models.Model):
 
     def activar(self):
         self.is_active = True
-
 
 class Estudiante(Usuario):
     class Meta:
@@ -200,6 +198,9 @@ class TestAsignado(models.Model):
     def __str__(self):
         concat=str(self.test) + ":" + str(self.estudiante)
         return concat
+
+    def cambiaEstado(self,estado):
+        self.estado = estado
 
     class Meta:
         verbose_name = "Test Asignado"

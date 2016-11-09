@@ -597,6 +597,7 @@ def TestAsignados(request):
     asignados_lista = TestAsignado.objects.order_by('estudiante')
     context = {'asignados_lista': lista_test}
     return render(request, 'testAsignados.html', context)
+
 """
 @login_required(login_url='/login')
 #@permission_required('ptti.change_grupo', login_url="/login/")
@@ -650,3 +651,24 @@ def TestEstudiante(request):
 
     context = {'asignados_lista': lista_test}
     return render(request, 'mis-test.html', context)
+
+@login_required(login_url='/login')
+def IniciarTest(request,id_test_asi):
+    test_asi    = get_object_or_404(TestAsignado, pk=id_test_asi)
+    test = get_object_or_404(TestTI, pk=test_asi.id)
+    return render(request, 'responder_test.html', {'test': test})
+
+@login_required(login_url='/login')
+def ResponderTest(request,id_test_asi,id_preg):
+    test_asi    = get_object_or_404(TestAsignado, pk=id_test_asi)
+    test = get_object_or_404(TestTI, pk=test_asi.id)
+    test_asi.cambiaEstado("INICIADO")
+    test_asi.save()
+    pregunta    = PreguntaTestTI.objects.filter(test=test.id, numero=id_preg)
+    respuestas  = RespuestaTestTI.objects.filter(pregunta=pregunta)
+    return render(request, 'responder_pregunta.html', {'pregunta':pregunta, 'respuestas':respuestas})
+
+
+@login_required(login_url='/login')
+def TerminarTest(request):
+    pass
