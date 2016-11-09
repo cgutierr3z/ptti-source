@@ -384,7 +384,7 @@ class FormGrupo(forms.ModelForm):
 class FormTestTI(forms.ModelForm):
     class Meta:
         model = TestTI
-        fields = ['nombre']
+        fields = ['nombre','descripcion']
 
 class FormPreguntaTestTI(forms.ModelForm):
     class Meta:
@@ -421,11 +421,11 @@ class FormAsignartestEstudiante(forms.ModelForm):
     class Meta:
         model = TestAsignado
         fields = ['test','estudiante', 'estado']
-    
+
     def __init__(self, *args, **kwargs):
         psicolo = kwargs.pop('psicol')
         super(FormAsignartestEstudiante, self).__init__(*args, **kwargs)
-        
+
         if psicolo:
             self.fields['estudiante'].queryset = Estudiante.objects.filter(grupo__psicologo=psicolo)
             self.fields['test'].queryset = TestTI.objects.all()
@@ -438,18 +438,11 @@ class FormAsignartestEstudianteGrupo(forms.ModelForm):
     class Meta:
         model = TestAsignado
         fields = ['test','estudiante', 'estado']
-    
+
     def __init__(self, *args, **kwargs):
         grupo = kwargs.pop('grupo')
         super(FormAsignartestEstudianteGrupo, self).__init__(*args, **kwargs)
-        
+
         if grupo:
             self.fields['estudiante'].queryset = Estudiante.objects.filter(grupo=grupo)
             self.fields['test'].queryset = TestTI.objects.all()
-
-
-
-
-
-
-

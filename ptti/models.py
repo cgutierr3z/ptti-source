@@ -143,7 +143,9 @@ class Estudiante(Usuario):
 
 #modelo de Test
 class TestTI(models.Model):
-    nombre      = models.CharField(max_length=200)
+    nombre      = models.CharField(max_length=40)
+    descripcion = models.CharField(max_length=400)
+    no_preguntas= models.PositiveIntegerField(default=0)
     is_active   = models.BooleanField('Activar',default=True)
 
     def __str__(self):
@@ -163,10 +165,10 @@ class TestTI(models.Model):
 class PreguntaTestTI(models.Model):
     test        = models.ForeignKey(TestTI, on_delete=models.CASCADE)
     pregunta    = models.CharField(max_length=200)
-    numero      = models.CharField(max_length=200,unique=True)
+    numero      = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return self.numero + " " +  self.pregunta
+        return str(self.numero) + " " +  self.pregunta
 
     class Meta:
         verbose_name = "Pregunta Test TI"
@@ -193,11 +195,11 @@ class TestAsignado(models.Model):
     ]
     estudiante  = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     test        = models.ForeignKey(TestTI, on_delete=models.CASCADE)
-    estado      = models.CharField(max_length=20,choices=ESTADOS_LIST)
     estado      = models.CharField(max_length=200,choices=ESTADOS_LIST, default='SIN INICIAR')
+    pre_actual  = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        concat=str(self.test) + " " + str(self.estudiante)
+        concat = str(self.test) + " : " + str(self.estudiante)
         return concat
 
     def cambiaEstado(self,estado):
@@ -213,8 +215,8 @@ class RespuestaEstudiante(models.Model):
     respuesta   = models.ForeignKey(RespuestaTestTI, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.test + ":" + self.estudiante
+        return str(self.testAsignado) + " : " + str(self.pregunta) + " : " + str(self.respuesta)
 
     class Meta:
-        verbose_name = "Test Asignado"
-        verbose_name_plural = "Tests Asignados"
+        verbose_name = "Respuesta Estudiante"
+        verbose_name_plural = "Respuestas Estudiantes"

@@ -49,4 +49,4 @@ admin.site.register(RespuestaTestTI)
 
 admin.site.register(TestAsignado)
 
-
+admin.site.register(RespuestaEstudiante)

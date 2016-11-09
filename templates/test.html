@@ -19,8 +19,9 @@
       <thead>
         <tr style="font-weight:bold;text-align:center">
 					<td></td>
-          <td>nombre</td>
-          <td>opciones</td>
+          <td>Nombre</td>
+					<td>Preguntas</td>
+          <td>Opciones</td>
         </tr>
       </thead>
       <tbody>
@@ -28,12 +29,14 @@
           <tr style="text-align:center">
 				<td>{{ forloop.counter }}</td>
 				<td>{{ test.nombre }}</td>
-				<td><a class="btn btn-sm btn-default" href="{% url 'ptti:cambiar_nombre_test' test.id %}">cambiar nombre</a></td>
-				<td><a class="btn btn-sm btn-default" href="{% url 'ptti:preguntas_test' test.id %}">Ver preguntas</a></td>
-				<td>{% if test.is_active %}
-						<a class="btn btn-sm btn-danger" href="{% url 'ptti:desactivar_test' test.id %}">desactivar</a>
+				<td>{{ test.no_preguntas }}</td>
+				<td>
+					<a class="btn btn-sm btn-default" href="{% url 'ptti:cambiar_nombre_test' test.id %}">Editar</a>
+					<a class="btn btn-sm btn-default" href="{% url 'ptti:preguntas_test' test.id %}">Ver preguntas</a>
+					{% if test.is_active %}
+						<a class="btn btn-sm btn-danger" href="{% url 'ptti:desactivar_test' test.id %}">Desactivar</a>
 					{% else %}
-						<a class="btn btn-sm btn-success" href="{% url 'ptti:activar_test' test.id %}">activar</a>
+						<a class="btn btn-sm btn-success" href="{% url 'ptti:activar_test' test.id %}">Activar</a>
 					{% endif %}
 				</td>
           </tr>

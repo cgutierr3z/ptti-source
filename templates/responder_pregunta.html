@@ -13,18 +13,19 @@
 
 {% block contenido %}
 	<center>
-		<h1>Responder test: {{test.nombre}}</h1>
-		
+
+			<h1> {{pregunta.numero}}. ¿{{ pregunta.pregunta }}?</h1>
 
 		{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-		<form action="" method="post">
+		<form action="{% url 'ptti:ResponderTest' test.id pregunta.numero %}" method="post">
 		{% csrf_token %}
+			<input type="hidden" name="test" value="{{test.id}}">
 		{% for rs in respuestas %}
 		    <input type="radio" name="rs" id="rs{{ forloop.counter }}" value="{{ rs.id }}" />
 		    <label for="rs{{ forloop.counter }}">{{ rs.respuesta }}</label><br />
 		{% endfor %}
-		<a class="btn btn-sm btn-default" href="{% url 'ptti:TestEstudiante' %}">Volver</a>
+		<a class="btn btn-sm btn-default" href="javascript:history.back(1)">Atras</a>
 		<input class="btn btn-sm btn-primary" type="submit" value="Siguiente" />
 		</form>
 	</center>

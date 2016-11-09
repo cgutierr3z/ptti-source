@@ -41,7 +41,15 @@ def login(request):
                     return render(request,'login_error.html')
                 else:
                     auth_login(request, acceso)
-                    return HttpResponseRedirect('/perfil')
+                    if request.user.is_estudiante:
+                        return HttpResponseRedirect('/mis-test/')
+                    if request.user.is_psicologo:
+                        return HttpResponseRedirect('/asignados/')
+                    if request.user.is_administrador:
+                        return HttpResponseRedirect('/test/')
+                    if request.user.is_superuser:
+                        return HttpResponseRedirect('/administradores/')
+                    #return HttpResponseRedirect('/perfil')
             else:
                 return render(request,'login_error.html',{'formulario':formulario})
     else:
@@ -515,6 +523,9 @@ def crear_pregunta(request, test_id):
         if formulario.is_valid():
             #ins = formulario.save(commit=False)
             formulario.save()
+            test = TestTI.objects.get(pk=test_id)
+            test.no_preguntas += 1
+            test.save()
             return preguntas_test(request, test_id)
     else:
         formulario = FormPreguntaTestTI()
@@ -581,8 +592,8 @@ def editar_respuesta(request, res_id,pre_id):
 @login_required(login_url='/login')
 #@permission_required('ptti.asignar', login_url="/login/")
 def TestAsignados(request):
-    listaa=TestAsignado.objects.filter(estudiante__grupo__psicologo=request.user)
-    context = {'asignados_lista': listaa}
+    lista = TestAsignado.objects.filter(estudiante__grupo__psicologo=request.user)
+    context = {'asignados_lista': lista}
     return render(request, 'testAsignados.html', context)
 
 
@@ -619,7 +630,6 @@ def listaEstudiantes(request, gru_id):
     return render(request, 'asignar_test_estudiante.html', {'formulario':formulario})
 
 
-
 """
 @login_required(login_url='/login')
 #@permission_required('ptti.change_grupo', login_url="/login/")
@@ -641,9 +651,7 @@ def diagnosticar(request):
 #@permission_required('ptti.asignar', login_url="/login/")
 def TestEstudiante(request):
     estudiante = Estudiante.objects.filter(pk=request.user.id)
-
     lista_test = TestAsignado.objects.filter(estudiante=estudiante)
-
     context = {'asignados_lista': lista_test}
     return render(request, 'mis-test.html', context)
 
@@ -654,16 +662,70 @@ def IniciarTest(request,id_test_asi):
     return render(request, 'responder_test.html', {'test': test})
 
 @login_required(login_url='/login')
-def ResponderTest(request,id_test_asi,id_preg):
+def ResponderTest(request,id_test_asi,no_preg):
     test_asi    = get_object_or_404(TestAsignado, pk=id_test_asi)
-    test = get_object_or_404(TestTI, pk=test_asi.id)
     test_asi.cambiaEstado("INICIADO")
+    test_asi.pre_actual = no_preg
     test_asi.save()
-    pregunta    = PreguntaTestTI.objects.filter(test=test.id, numero=id_preg)
+    test        = get_object_or_404(TestTI, pk=test_asi.id)
+    pregunta    = get_object_or_404(PreguntaTestTI,test=test.id, numero=no_preg)
     respuestas  = RespuestaTestTI.objects.filter(pregunta=pregunta)
-    return render(request, 'responder_pregunta.html', {'pregunta':pregunta, 'respuestas':respuestas})
+
+    if request.method == 'POST':
+        try:
+            rs = pregunta.respuestatestti_set.get(pk=request.POST['rs'])
+        except (KeyError, RespuestaTestTI.DoesNotExist):
+            return render(request, 'responder_pregunta.html', {
+                'test':test_asi,
+                'pregunta':pregunta,
+                'respuestas':respuestas,
+                'error_message': "No ha seleccionado una opcion",
+            })
+        else:
+            siguiente = int(no_preg) + 1
+
+            obj = RespuestaEstudiante.objects.get(
+                testAsignado = test_asi,
+                pregunta = pregunta,
+            )
+            obj.respuesta = rs
+            obj.save()
+
+            if siguiente <= test.no_preguntas:
+                return HttpResponseRedirect(reverse('ptti:ResponderTest', args=(id_test_asi,str(siguiente))))
+            else:
+                test_asi.cambiaEstado("FINALIZADO")
+                test_asi.pre_actual = test.no_preguntas
+                test_asi.save()
+                #return HttpResponseRedirect(reverse('ptti:TerminarTest', args=(id_test_asi,)))
+                return HttpResponseRedirect(reverse('ptti:TestEstudiante'))
+    else:
+        return render(request, 'responder_pregunta.html', {
+            'test':test,
+            'pregunta':pregunta,
+            'respuestas':respuestas
+        })
+
+"""
+    question = get_object_or_404(Question, pk=question_id)
+    try:
+        selected_choice = question.choice_set.get(pk=request.POST['choice'])
+    except (KeyError, Choice.DoesNotExist):
+        # Redisplay the question voting form.
+        return render(request, 'polls/detail.html', {
+            'question': question,
+            'error_message': "You didn't select a choice.",
+        })
+    else:
+        selected_choice.votes += 1
+        selected_choice.save()
+        # Always return an HttpResponseRedirect after successfully dealing
+        # with POST data. This prevents data from being posted twice if a
+        # user hits the Back button.
+        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+"""
 
 
 @login_required(login_url='/login')
-def TerminarTest(request):
+def TerminarTest(request,id_test_asi):
     pass

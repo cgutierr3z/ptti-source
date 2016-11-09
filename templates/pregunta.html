@@ -19,27 +19,25 @@
 		<table class="table table-striped">
       <thead>
         <tr style="font-weight:bold;text-align:center">
-		    <td>orden</td>          
-		    <td>test</td>
-          	<td>pregunta</td>
-
-         <td>opciones</td>
+			    <td>orden</td>
+			    <td>test</td>
+	      	<td>pregunta</td>
+	        <td>opciones</td>
         </tr>
       </thead>
       <tbody>
-				{% for pregunta in pregunta_lista %}
-          <tr style="text-align:center">
-				<td>{{ pregunta.numero }}</td>
-				<td>{{ pregunta.test }}</td>
-				<td>{{ pregunta.pregunta }}</td>
-				
-				<td><a class="btn btn-sm btn-default" href="{% url 'ptti:editar_pregunta' pregunta.id test %}">Editar pregunta</a></td>	
+			{% for pregunta in pregunta_lista %}
+        <tr style="text-align:center">
+					<td>{{ pregunta.numero }}</td>
+					<td>{{ pregunta.test }}</td>
+					<td>{{ pregunta.pregunta }}</td>
 
-				<td><a class="btn btn-sm btn-danger" href="{% url 'ptti:respuestas_pregunta' pregunta.id %}">Respuestas</a></td>	
-
-				
-          </tr>
-				{% endfor %}
+					<td>
+						<a class="btn btn-sm btn-default" href="{% url 'ptti:editar_pregunta' pregunta.id test %}">Editar pregunta</a>
+						<a class="btn btn-sm btn-primary" href="{% url 'ptti:respuestas_pregunta' pregunta.id %}">Respuestas</a>
+					</td>
+        </tr>
+			{% endfor %}
       </tbody>
     </table>
 	</div>

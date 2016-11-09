@@ -16,6 +16,7 @@
 	<center>
 		<h1>Responder test: {{test.nombre}}</h1>
 		<p> Estas a punto de iniciar el test de {{test.nombre}}</p>
+		<p> {{ test.descripcion }} </p>
 		<a class="btn btn-sm btn-default" href="{% url 'ptti:TestEstudiante' %}">Volver</a>
 		<a class="btn btn-sm btn-primary" href="{% url 'ptti:ResponderTest' test.id 1 %}">Iniciar</a>
 	</center>
